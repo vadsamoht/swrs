@@ -23,7 +23,7 @@ short_run = False
 #   DATABASE GLOBALS
 #
 DATABASE = './runs_db.sqlite'
-DATABASE_VERSION = 'v0.6.2020-6-12'
+DATABASE_VERSION = 'v0.8.2020-6-12'
 DATESTAMP = date.today().strftime("%Y%m%d")
 #
 #   GAME/SRC GLOBALS
@@ -40,6 +40,7 @@ il_category_names = ["X-Wing",
                     "TIE Interceptor",
                     "Naboo Starfighter"]
 il_level_names = ["Ambush at Mos Eisley",
+                  "Rendezvous on Barkhesh",
                   "The Search for the Nonnah",
                   "Defection at Corellia",
                   "Liberation of Gerrard V",
@@ -49,6 +50,7 @@ il_level_names = ["Ambush at Mos Eisley",
                   "Rescue on Kessel",
                   "Prisons of Kessel",
                   "Battle Above Taloraan",
+                  "Escapt from Fest",
                   "Blockade on Chandrila",
                   "Raid on Sullust",
                   "Moff Seerdon's Revenge",
@@ -90,6 +92,14 @@ bad_il_combinations = [["Defection at Corellia", "X-Wing"],
                        ["Escape from Fest", "Y-Wing"],
                        ["Escape from Fest", "V-Wing"],
                        ["Escape from Fest", "Naboo Starfighter"],
+                       ["Beggar's Canyon", "X-Wing"],
+                       ["Beggar's Canyon", "A-Wing"],
+                       ["Beggar's Canyon", "Speeder"],
+                       ["Beggar's Canyon", "Millennium Falcon"],
+                       ["Beggar's Canyon", "TIE Interceptor"],
+                       ["Beggar's Canyon", "Y-Wing"],
+                       ["Beggar's Canyon", "V-Wing"],
+                       ["Beggar's Canyon", "Naboo Starfighter"],
                        ["The Death Star Trench Run", "A-Wing"],
                        ["The Death Star Trench Run", "Speeder"],
                        ["The Death Star Trench Run", "Millennium Falcon"],
@@ -130,17 +140,8 @@ def createNewDb():
     cur.execute("INSERT INTO metadata (field, value) " +
                 "VALUES (?, ?)",
                 ['db_version', DATABASE_VERSION])
-  return
 
-
-def updateDb():
-  if debug:
-    print("Updating existing", DATABASE, "\n")
-
-  # Create connection to the DB
-  con = lite.connect(DATABASE)
-
-  # Create the tables with necessary rows
+  # Create table for runs
   with con:
     cur = con.cursor()
     cur.execute("CREATE TABLE IF NOT EXISTS il_runs_" + DATESTAMP + " (" +
@@ -152,8 +153,69 @@ def updateDb():
                 "platform        text," +
                 "medal           text," +
                 "src_link        text)")
-  
-  # Add database version to metadata
+
+  # Create table for players, without score_date cols (added to updateDB()) due 
+  # to lack of IF NOT EXISTS on ALTER TABLE commands.
+  with con:
+    cur = con.cursor()
+    cur.execute("CREATE TABLE IF NOT EXISTS players (" +
+                "player_id       integer primary key," +
+                "name            text," +
+                "src_link        text," +
+                "n64_total       integer," +
+                "pc_total        integer," +
+                "UNIQUE(name))")
+
+  return
+
+
+def updateDb():
+  if debug:
+    print("Updating existing", DATABASE, "\n")
+
+  # Create connection to the DB
+  con = lite.connect(DATABASE)
+
+  # Drop old table for date if present
+  with con:
+    cur = con.cursor()
+    cur.execute("DROP TABLE IF EXISTS il_runs_" + DATESTAMP)
+
+
+  # Create table for today's runs
+  with con:
+    cur = con.cursor()
+    cur.execute("CREATE TABLE IF NOT EXISTS il_runs_" + DATESTAMP + " (" +
+                "run_id          integer primary key," +
+                "level           text," +
+                "category        text," +
+                "player          text," +
+                "time            integer default 9999," +
+                "platform        text," +
+                "medal           text," +
+                "src_link        text)")
+
+  with con:
+    cur = con.cursor()
+    try:
+      cur.execute("ALTER TABLE players ADD COLUMN '" + DATESTAMP + "_pc_gold' integer default 0")
+    except:
+      pass
+    try:
+      cur.execute("ALTER TABLE players ADD COLUMN '" + DATESTAMP + "_pc_any' integer default 0")
+    except:
+      pass
+    try:
+      cur.execute("ALTER TABLE players ADD COLUMN '" + DATESTAMP + "_n64_gold' integer default 0")
+    except:
+      pass
+    try:
+      cur.execute("ALTER TABLE players ADD COLUMN '" + DATESTAMP + "_n64_any' integer default 0")
+    except:
+      pass
+    
+    
+  # Add update date to metadata
   with con:
     cur = con.cursor()
     cur.execute("REPLACE INTO metadata (field, value) " +
@@ -224,6 +286,10 @@ def add_il_run_to_db(run_data):
 
 
 def get_all_il_runs():
+  # Start a counter to see how long this takes
+  if (debug):
+    start_time = time.time()
+
   # Get the game instance
   game = api.get_game(game_id)
 
@@ -277,6 +343,59 @@ def get_all_il_runs():
             print("Adding to DB:", i)
           add_il_run_to_db(i)
 
+  if (debug):
+    # Print out timed completion message
+    total_time = time.time() - start_time
+    timetaken = ""
+    if total_time >= 3600:
+        timetaken += (textcol.WARN +
+                      str(int((total_time - (total_time % 3600))/3600)) +
+                      textcol.BODY +
+                      " hrs, ")
+        total_time = total_time % 3600
+    if total_time >= 60:
+        timetaken += (textcol.INFO +
+                      str(int((total_time - (total_time % 60))/60)) +
+                      textcol.BODY +
+                      " mins, ")
+        total_time = total_time % 60
+    timetaken += (textcol.OK +
+                  str(int(total_time)) +
+                  textcol.BODY +
+                  " secs.")
+    print("Leaderboards scrape complete in " + timetaken + ".")
+
+  return
+
+def updatePlayers():
+  # Get a list of all of the players  for updating into the 'players' table
+
+  # Create connection to the DB
+  con = lite.connect(DATABASE)
+
+  with con:
+    cur = con.cursor()
+
+    # get Players from all runs in DB
+    cur.execute('SELECT player FROM il_runs_' + DATESTAMP)
+
+    # create curated_player_list with all players and duplicates removed
+    full_player_list = cur.fetchall()
+    curated_player_list = []
+    for i in full_player_list:
+      if i[0] not in curated_player_list: # and i[0] is not "Jörmungandr":
+        curated_player_list.append(i[0])
+
+  # Insert each of those players into the 'players' table if not already present
+  for i in curated_player_list:
+    if debug:
+      #print("Inserting player:", i)
+      pass
+
+    with con:
+      cur = con.cursor()
+      cur.execute('INSERT OR IGNORE INTO players(name) VALUES ("' + i + '")')
+
   return
 
 
@@ -288,40 +407,40 @@ def get_all_il_runs():
 
 
 
-
-
-if (debug):
-  # Start a counter to see how long this takes
-  start_time = time.time()
-
 if not os.path.isfile(DATABASE):
     createNewDb()
 
 updateDb()
 get_all_il_runs()
+updatePlayers()
 
-if (debug):
-  # Print out timed completion message
-  total_time = time.time() - start_time
-  timetaken = ""
 
-  if total_time >= 3600:
-      timetaken += (textcol.WARN +
-                    str(int((total_time - (total_time % 3600))/3600)) +
-                    textcol.BODY +
-                    " hrs, ")
-      total_time = total_time % 3600
 
-  if total_time >= 60:
-      timetaken += (textcol.INFO +
-                    str(int((total_time - (total_time % 60))/60)) +
-                    textcol.BODY +
-                    " mins, ")
-      total_time = total_time % 60
 
-  timetaken += (textcol.OK +
-                str(int(total_time)) +
-                textcol.BODY +
-                " secs.")
 
-  print("Leaderboards scrape complete in " + timetaken + ".")
+# Create connection to the DB
+con = lite.connect(DATABASE)
+
+cur = con.cursor()
+
+
+
+
+
+q_platform = "N64"
+q_level = "Ambush at Mos Eisley"
+q_category = "X-Wing"
+q_medal = "Gold Medal"
+
+
+cur = con.cursor()
+cur.execute('SELECT player, time FROM il_runs_' + DATESTAMP +
+                ' WHERE platform="' + q_platform + '"' +
+                ' AND level="' + q_level + '"' +
+                ' AND category="' + q_category + '"' +
+                ' AND medal="' + q_medal + '"')
+
+il_leaderboard = cur.fetchall()
+print(il_leaderboard)
+
+# UPDATE Products SET Price = Price + 50 WHERE ProductID = 1
