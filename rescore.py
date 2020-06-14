@@ -65,7 +65,7 @@ def generate_scores(q_platform, q_level, q_category, q_medal):
 
 q_platform = "N64"
 q_level = "The Death Star Trench Run"
-q_category = "X-Wing"
+q_category = "Y-Wing"
 q_medal = "Any Medal"
 
 scoreboard = generate_scores(q_platform, q_level, q_category, q_medal)
