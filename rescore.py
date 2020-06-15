@@ -23,7 +23,8 @@ il_category_names = ["X-Wing",
                      "Speeder",
                      "Millennium Falcon",
                      "TIE Interceptor",
-                     "Naboo Starfighter"]
+                     "Naboo Starfighter",
+                     "T-16 Skyhopper"]
 il_level_names = ["Ambush at Mos Eisley",
                   "Rendezvous on Barkhesh",
                   "The Search for the Nonnah",
@@ -58,13 +59,14 @@ def generate_scores(q_platform, q_level, q_category, q_medal):
 	# Create connection to the DB
 	con = lite.connect(DATABASE)
 
-	cur = con.cursor()
-	cur.execute('SELECT player, time FROM il_runs_' + DATESTAMP +
-	                ' WHERE platform="' + q_platform + '"' +
-	                ' AND level="' + q_level + '"' +
-	                ' AND category="' + q_category + '"' +
-	                ' AND medal="' + q_medal + '"' +
-	                ' ORDER BY time ASC')
+	with con:
+		cur = con.cursor()
+		cur.execute('SELECT player, time FROM il_runs_' + DATESTAMP +
+		                ' WHERE platform="' + q_platform + '"' +
+		                ' AND level="' + q_level + '"' +
+		                ' AND category="' + q_category + '"' +
+		                ' AND medal="' + q_medal + '"' +
+		                ' ORDER BY time ASC')
 
 	il_leaderboard = cur.fetchall()
 	for i in range(len(il_leaderboard)):
@@ -94,11 +96,44 @@ def generate_scores(q_platform, q_level, q_category, q_medal):
 
 	return il_leaderboard
 
+def set_db_column(table, col_name, value):
+	#UPDATE table SET column=0
+	# Create connection to the DB
+	con = lite.connect(DATABASE)
 
+	cmd = 'UPDATE ' + table + ' SET "' + col_name + '"=' + value + ';'
+	print(cmd)
+
+	with con:	
+		cur = con.cursor()
+		cur.execute(cmd)
+
+# Set values of all players in today's column to 0
+set_db_column('players', DATESTAMP+"_n64_any", '0')
+set_db_column('players', DATESTAMP+"_n64_gold", '0')
+set_db_column('players', DATESTAMP+"_pc_any", '0')
+set_db_column('players', DATESTAMP+"_pc_gold", '0')
 
 for q_platform in il_platform_names:
+	if q_platform == 'N64':
+		platform_tag = '_n64'
+	elif q_platform == 'PC':
+		platform_tag = '_pc'
+	else:
+		platform_tag = "_PLATFORM"
+
 	for q_medal in il_medal_names:
-		for q_level in il_level_names:
+		if q_medal == 'Gold Medal':
+			medal_tag = '_gold'
+		elif q_medal == 'Any Medal':
+			medal_tag = '_any'
+		else:
+			medal_tag = "_MEDAL"
+
+		column_tag = DATESTAMP + platform_tag + medal_tag
+
+		for q_level in ["Ambush at Mos Eisley"]:
+		#for q_level in il_level_names:
 			#q_category = "Y-Wing"
 			level_master_list = []
 			for q_category in il_category_names:
@@ -125,7 +160,17 @@ for q_platform in il_platform_names:
 					#print("WOO", i, i[3])
 					i[3] = i[3] * fastest_level_multiplier
 
-			if True:
+			if debug:
 				print("\n" + q_level + ": (" + q_platform + ", " + q_medal + ")")
 				for i in level_master_list:
 					print(i)
+
+			for i in level_master_list:
+				for j in i:
+					print(j, column_tag)
+
+					# Create connection to the DB
+					con = lite.connect(DATABASE)
+					with con:
+						cur = con.cursor()
+						cur.execute('UPDATE players SET "' + column_tag + '"="' + column_tag + '"+' + str(j[3]) + ' WHERE name = "' + j[0] + '";')
