@@ -132,8 +132,8 @@ for q_platform in il_platform_names:
 
 		column_tag = DATESTAMP + platform_tag + medal_tag
 
-		for q_level in ["Ambush at Mos Eisley"]:
-		#for q_level in il_level_names:
+		#for q_level in ["Ambush at Mos Eisley"]:
+		for q_level in il_level_names:
 			#q_category = "Y-Wing"
 			level_master_list = []
 			for q_category in il_category_names:
