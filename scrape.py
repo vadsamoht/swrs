@@ -440,28 +440,3 @@ updatePlayers()
 
 
 
-# Create connection to the DB
-con = lite.connect(DATABASE)
-
-cur = con.cursor()
-
-
-
-'''
-
-q_platform = "N64"
-q_level = "Ambush at Mos Eisley"
-q_category = "X-Wing"
-q_medal = "Gold Medal"
-
-
-cur = con.cursor()
-cur.execute('SELECT player, time FROM il_runs_' + DATESTAMP +
-                ' WHERE platform="' + q_platform + '"' +
-                ' AND level="' + q_level + '"' +
-                ' AND category="' + q_category + '"' +
-                ' AND medal="' + q_medal + '"')
-
-il_leaderboard = cur.fetchall()
-print(il_leaderboard)
-'''

@@ -1,0 +1,63 @@
+{% macro header(header_text) %}
+<html>
+	<head>
+        <title>{{ header_text }}</title>
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename = 'favicon-32x32.png') }}"/>
+        <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename = 'favicon-96x96.png') }}"/>
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename = 'favicon-16x16.png') }}"/>
+        <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename = 'favicon.png') }}"/>
+	    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'style.css') }}" />
+        <script type = "text/javascript" src="{{ url_for('static', filename = 'Chart.js') }}"></script>
+	</head>
+	<body>
+
+    <div id="container">
+
+		{{ tabs() }}
+
+    <div id="body-wrapper">
+
+		<div id="body-content">
+{% endmacro %}
+
+{% macro tabs() %}
+		<div id="body-tabs">
+            <div id="lefttabs">
+                <a href="/"><img src= {{ url_for('static', filename = 'logo.png') }}></a>
+            </div>
+
+            <div id="righttabs">
+                <a href="https://www.speedrun.com/rogue1/"><div id="tab" class="topplayers back">Speedrun.com</div></a>
+            </div>
+            <div id="righttabs">
+                <a href="/faq"><div id="tab" class="topplayers back">Rankings FAQ</div></a>
+            </div>
+
+        </div>
+{% endmacro %}
+
+{% macro title(name, date) %}
+            <div id="title">
+                    <h1>
+                        {{ name }}
+                    </h1>
+                    {% if date %}
+                    <div id="lastupdate">
+                        <p>Last leaderboard update: {{date}}</p>
+                    </div>
+                    {% endif %}
+            </div>
+{% endmacro %}
+
+{% macro footer() %}
+            </div>
+            <div id="footertext">
+                <span title="v0.13 Ackbar">SW:RS Ranking v0.13</span>
+            </div>
+        </div>
+        
+    </div>
+
+    </body>
+</html>
+{% endmacro %}

@@ -67,8 +67,8 @@ def generate_scores(q_platform, q_level, q_category, q_medal):
 		                ' AND category="' + q_category + '"' +
 		                ' AND medal="' + q_medal + '"' +
 		                ' ORDER BY time ASC')
-
 	il_leaderboard = cur.fetchall()
+
 	for i in range(len(il_leaderboard)):
 		il_leaderboard[i] = list(il_leaderboard[i])
 		if debug:

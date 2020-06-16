@@ -1,0 +1,56 @@
+{% from "macros.html" import header, footer, categories, title %}
+
+
+{{ header("Star Wars: Rogue Squadron Ranking") }}
+
+{{ title("Star Wars: Rogue Squadron Ranking", last_date) }}
+
+
+{% if all_boards %}
+
+            {% for board in range(all_boards|length): %}
+            <div id="playerlist">
+                <div id="list-line" class="header">
+                    <div id="list-segment" class="title">
+                        {{ titles[board] }}
+                    </div>
+                </div>
+                <div id="list-line" class="header">
+                    <div id="list-segment" class="number"></div>
+                    <div id="list-segment" class="rating">Score</div>
+                    <div id="list-segment" class="name">Name</div>
+                </div>
+
+                {% set playerlist = input_data%}
+                {% for line in range(all_boards[board]|length):%}
+                    <div id="zebrastripes">
+                        <div id="list-line">
+                            <div id="list-segment" class="number">  {{ line+1 }}
+                            </div>
+                            <div id="list-segment" class="rating">
+                                {{ all_boards[board][line][1] }}
+                            </div>
+                            <div id="list-segment" class="name">
+                                {{ all_boards[board][line][0] }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+{% elif err %}
+    <div id="search_error_message">
+        {{ err }}
+    </div>
+{% else %}
+    <div id="about">
+        <center>
+            <p>No leaderboards sent to 'main' template</p>
+        </center>
+    </div>
+{% endif %}
+
+    <br />
+
+
+{{ footer() }}
