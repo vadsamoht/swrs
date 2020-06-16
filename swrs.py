@@ -5,9 +5,9 @@ import os
 import sqlite3 as lite
 import math
 from datetime import date
-swrs = Flask(__name__)
-application = swrs
-swrs.config['TEMPLATES_AUTO_RELOAD'] = True
+app = Flask(__name__)
+application = app
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 DATABASE = './runs_db.sqlite'
 
 
@@ -22,7 +22,7 @@ with con:
     #print(DATESTAMP)
 
 
-@swrs.route('/')
+@app.route('/')
 def home():
     # Main page - show Player Search page
 
@@ -56,7 +56,7 @@ def home():
         return str(e)
 
 
-@swrs.route('/faq')
+@app.route('/faq')
 def faq():
     # FAQ page
     try:
@@ -66,18 +66,18 @@ def faq():
 
 
 
-@swrs.teardown_appcontext
+@app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
 
-@swrs.errorhandler(500)
+@app.errorhandler(500)
 def internal_server_error(error):
-    swrs.logger.error('Server Error: %s', (error))
+    app.logger.error('Server Error: %s', (error))
     print(error)
     return 500
 
 if __name__ == '__main__':
-    swrs.run(debug=True)
-    # swrs.run(debug=True, host='192.168.1.200')
+    app.run(debug=True)
+    # app.run(debug=True, host='192.168.1.200')

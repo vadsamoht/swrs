@@ -176,16 +176,16 @@ body{
 #list-segment{
     display: table-cell;
     vertical-align: middle;
-    padding: 0px 12px;
+    padding: 0px 10px;
 }
 #list-segment.number{
-    width: 20px;
+    width: 25px;
     padding: 0px 5px;
     font-weight: bold;
     text-align: center;
 }
 #list-segment.rating{
-    width: 50px;
+    width: 65px;
     text-align: center;
 }
 #list-segment.name{
