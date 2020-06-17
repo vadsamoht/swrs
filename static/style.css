@@ -62,11 +62,11 @@ body{
 }
 
 .front{
-    
+
 }
 
 .back{
-    
+
 }
 
 #lefttabs{
@@ -136,7 +136,7 @@ body{
     font-family: monospace;
     font-size: 1.3em;
     width: min-content;
-    max-width: 22%;
+    max-width: 23%;
     display: inline-block;
 }
 #playerlist > div:nth-of-type(even){
@@ -299,10 +299,10 @@ span.WFM{
     text-align: left;
 }
 #stats-box-data-inactive{
-    float: right; 
-    text-align: right; 
-    display: inline-block; 
-    margin-right: 2px; 
+    float: right;
+    text-align: right;
+    display: inline-block;
+    margin-right: 2px;
     color: #cc0000;
 }
 #stats-box-website-title{
@@ -447,4 +447,16 @@ input.textfield{
 #list-segment.title {
     text-align: center;
     width: 100%;
+}
+
+table {
+    margin: 5px 20px 5px 20px;
+    border: 1px solid #000000;
+    text-align: center;
+    display: inline-block;
+    background: #ffffff;
+}
+th {
+    border-bottom: 1px solid #000000;
+    padding: 5px 10px;
 }

@@ -1,31 +1,34 @@
 {% macro header(header_text) %}
 <html>
-	<head>
+    <head>
         <title>{{ header_text }}</title>
         <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename = 'favicon-32x32.png') }}"/>
         <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename = 'favicon-96x96.png') }}"/>
         <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename = 'favicon-16x16.png') }}"/>
         <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename = 'favicon.png') }}"/>
-	    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'style.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'style.css') }}" />
         <script type = "text/javascript" src="{{ url_for('static', filename = 'Chart.js') }}"></script>
-	</head>
-	<body>
+    </head>
+    <body>
 
     <div id="container">
 
-		{{ tabs() }}
+        {{ tabs() }}
 
     <div id="body-wrapper">
 
-		<div id="body-content">
+        <div id="body-content">
 {% endmacro %}
 
 {% macro tabs() %}
-		<div id="body-tabs">
+        <div id="body-tabs">
             <div id="lefttabs">
                 <a href="/"><img src= {{ url_for('static', filename = 'logo.png') }}></a>
             </div>
 
+            <div id="righttabs">
+                <a href="https://discord.gg/Gp7swfc"><div id="tab" class="topplayers back">RS Discord</div></a>
+            </div>
             <div id="righttabs">
                 <a href="https://www.speedrun.com/rogue1/"><div id="tab" class="topplayers back">Speedrun.com</div></a>
             </div>
@@ -52,10 +55,11 @@
 {% macro footer() %}
             </div>
             <div id="footertext">
-                <span title="v0.13 Ackbar">SW:RS Ranking v0.13</span>
+                <!--<span title="v0.13 Ackbar">SW:RS Ranking v0.13, 16-Jun-2020</span>-->
+                <span title="v0.18 Biggs">SW:RS Ranking v0.18, 17-Jun-2020</span>
             </div>
         </div>
-        
+
     </div>
 
     </body>

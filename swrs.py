@@ -1,10 +1,6 @@
 from flask import (Flask, send_file, render_template, request,
                    redirect, make_response, g, url_for, jsonify)
-import sys
-import os
 import sqlite3 as lite
-import math
-from datetime import date
 app = Flask(__name__)
 application = app
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -40,8 +36,8 @@ def home():
             with con:
                 cur.execute('SELECT name, "' + q_col +
                             '" FROM players' +
-                            ' ORDER BY "' + q_col + '" DESC')
-                
+                            ' ORDER BY "' + q_col + '" DESC, name COLLATE NOCASE ASC')
+
             il_leaderboard = cur.fetchall()
 
             all_leaderboards.append(il_leaderboard)

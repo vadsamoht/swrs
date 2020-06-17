@@ -8,9 +8,134 @@
     <br />
 
     <div id="about">
-            <div id="helpContents">
+            <!--<div id="helpContents">
                 <p>Nothing here yet :(</p>
-            </div>
+            </div>-->
+            <div id="">
+                <h2>The Site</h2>
+
+                	<h3>Why are there so few points for Gold medals? Or, why is the scoring system broken?</h3>
+
+                	<p>Limitations in the speedrun.com API mean that we can only currently get the fastest run for each combination of player, level, category (ship) and platform. This means that as the Any Medal time is usually faster, we can't sccess most players' Gold Medal run data. Gold Medal runs only appear if there is either no faster Any Medal run, or both have been submitted with the same time and the Gold Medal run was approved first.</p>
+
+                	<p>We are looking into ways to remedy this.</p>
+
+                	<h3>Can I help with the site?</h3>
+
+                	Yes, especially with front-end layout/design. Contact Vadsamoht on the <a href="https://discord.gg/Gp7swfc">Rogue Squadron discord</a> or email vadsamoht@vadsamoht.com.
+
+                <h2>Ranking System</h2>
+
+                	<h3>How are points awarded?</h3>
+
+                	<p>SWRS uses a points system loosely based on the IL rankings of the-elite.net. In this, a first-ranked player recieves the maximum number of points, a player ranked second is awarded three less than the maximum, third place is five points below the maximum, and every successive place beyond that is awarded one point less. in the case of a very large number of players, negative points are not awarded.</p>
+
+                	<p>It is also worth noting that the 'place' of a run can be tied, and those ties logically 'eat up' other positions. i.e. if the top five times are 1:00, 1:01, 1:01, 1:03 and 1:04, then the placings for those runs are 1st, 2nd, 2nd, 4th and 5th.</p>
+
+
+                	<h3>So what is the maximum number of points?</h3>
+
+                	<p>The maximum number of points for an IL scales up with the number of players that have submitted a time for it. If only one time is submitted then the maximum number of points is 25, and this increases up to 100 with more players according to the table below:</p>
+
+                    <div id="helpContents">
+                    	<table>
+                            <tr>
+                        		<th>Nº runs</td>
+                        		<th>max. score</td>
+                    		</tr>
+                        	<tr>
+                        		<td>1</td>
+                        		<td>25</td>
+                        	</tr>
+                        	<tr>
+                        		<td>2</td>
+                        		<td>35</td>
+                        	</tr>
+                        	<tr>
+                        		<td>3</td>
+                        		<td>44</td>
+                        	</tr>
+                        	<tr>
+                        		<td>4</td>
+                        		<td>52</td>
+                        	</tr>
+                        	<tr>
+                        		<td>5</td>
+                        		<td>59</td>
+                        	</tr>
+                        	<tr>
+                        		<td>6</td>
+                        		<td>65</td>
+                        	</tr>
+                        	<tr>
+                        		<td>7</td>
+                        		<td>70</td>
+                        	</tr>
+                        	<tr>
+                        		<td>8</td>
+                        		<td>75</td>
+                        	</tr>
+                        	<tr>
+                        		<td>9</td>
+                        		<td>79</td>
+                        	</tr>
+                        </table>
+                        <table>
+                            <tr>
+                        		<th>Nº runs</td>
+                        		<th>max. score</td>
+                    		</tr>
+                        	<tr>
+                        		<td>10</td>
+                        		<td>83</td>
+                        	</tr>
+                        	<tr>
+                        		<td>11</td>
+                        		<td>87</td>
+                        	</tr>
+                        	<tr>
+                        		<td>12</td>
+                        		<td>90</td>
+                        	</tr>
+                        	<tr>
+                        		<td>13</td>
+                        		<td>93</td>
+                        	</tr>
+                        	<tr>
+                        		<td>14</td>
+                        		<td>95</td>
+                        	</tr>
+                        	<tr>
+                        		<td>15</td>
+                        		<td>97</td>
+                        	</tr>
+                        	<tr>
+                        		<td>16</td>
+                        		<td>98</td>
+                        	</tr>
+                        	<tr>
+                        		<td>17</td>
+                        		<td>99</td>
+                        	</tr>
+                        	<tr>
+                        		<td>18+</td>
+                        		<td>100</td>
+                        	</tr>
+                        </table>
+                    </div>
+
+                	<h3>So my highly-competitive WR is worth the same as for a ship nobody uses or a TWR on an autoscroller?</h3>
+
+                	<p>Not wanting to create complicated and subjective decisions on the 'worth' of each IL, after some discussion we decided to implement one further tweak to the scoring system: The (uniquely) fastest ship in a level/medal combination grants a 3x multiplier to all of its scores. This has several positive effects:</p>
+
+                    <ul>
+                    	<li>Rewarding good runs in what are generally the most competitive categories</li>
+                    	<li>Barkhesh and Nonnah, where the fastest-possible time is relatively easy to achieve in most cases, recieve no multiplier at all because the feastes time is tied across multiple ships.</li>
+                    	<li>Rewarding skills that are most likely to carry over to full-game runs</li>
+                    	<li>Encouraging running multiple levels before perfecting one</li>
+                	</ul>
+        	</div>
+
     </div>
 
 {{ footer() }}

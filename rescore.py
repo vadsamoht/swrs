@@ -1,11 +1,10 @@
 import sqlite3 as lite
-import time
 from datetime import date
 
 debug = False
 
 prorated_maxima = [25, 35, 44, 52, 59, 65, 70, 75, 79, 83, 87, 90, 93, 95, 97, 98, 99, 100]
-prorated_maxima2 = [25, 40, 50, 59, 67, 74, 80, 85, 89, 92, 95, 97, 99, 100]
+#prorated_maxima2 = [25, 40, 50, 59, 67, 74, 80, 85, 89, 92, 95, 97, 99, 100]
 
 fastest_level_multiplier = 3
 
@@ -104,7 +103,7 @@ def set_db_column(table, col_name, value):
 	cmd = 'UPDATE ' + table + ' SET "' + col_name + '"=' + value + ';'
 	print(cmd)
 
-	with con:	
+	with con:
 		cur = con.cursor()
 		cur.execute(cmd)
 
@@ -142,7 +141,7 @@ for q_platform in il_platform_names:
 				scoreboard = generate_scores(q_platform, q_level, q_category, q_medal)
 
 				level_master_list.append(scoreboard)
-				
+
 			fastest_time = 9999
 			fastest_idx = 0
 			fastest_unique = False
