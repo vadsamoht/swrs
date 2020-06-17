@@ -1,11 +1,10 @@
 import sqlite3 as lite
 from datetime import date
 
-debug = False
+debug = 1
 
 prorated_maxima = [25, 35, 44, 52, 59, 65, 70, 75, 79, 83, 87, 90, 93, 95, 97, 98, 99, 100]
 #prorated_maxima2 = [25, 40, 50, 59, 67, 74, 80, 85, 89, 92, 95, 97, 99, 100]
-
 fastest_level_multiplier = 3
 
 DATABASE = './runs_db.sqlite'
@@ -70,7 +69,7 @@ def generate_scores(q_platform, q_level, q_category, q_medal):
 
 	for i in range(len(il_leaderboard)):
 		il_leaderboard[i] = list(il_leaderboard[i])
-		if debug:
+		if debug >= 2:
 			print(il_leaderboard[i])
 
 	number_players = len(il_leaderboard)
@@ -79,12 +78,12 @@ def generate_scores(q_platform, q_level, q_category, q_medal):
 	else:
 		maximum_points = prorated_maxima[number_players-1]
 
-	if debug:
+	if debug >= 2:
 		print("Number of players:", number_players)
 		print("Maximum score:", maximum_points)
 
 	for i in range(len(il_leaderboard)):
-		if debug:
+		if debug >= 2:
 			print("Working on", il_leaderboard[i])
 		if i == 0 or il_leaderboard[i][1] != il_leaderboard[i-1][1]:
 			il_leaderboard[i].append(i+1)
@@ -101,7 +100,6 @@ def set_db_column(table, col_name, value):
 	con = lite.connect(DATABASE)
 
 	cmd = 'UPDATE ' + table + ' SET "' + col_name + '"=' + value + ';'
-	print(cmd)
 
 	with con:
 		cur = con.cursor()
@@ -159,17 +157,20 @@ for q_platform in il_platform_names:
 					#print("WOO", i, i[3])
 					i[3] = i[3] * fastest_level_multiplier
 
-			if debug:
+			if debug >= 2:
 				print("\n" + q_level + ": (" + q_platform + ", " + q_medal + ")")
 				for i in level_master_list:
 					print(i)
 
 			for i in level_master_list:
 				for j in i:
-					print(j, column_tag)
+					if debug >= 2:
+						print(j, column_tag)
 
 					# Create connection to the DB
 					con = lite.connect(DATABASE)
 					with con:
 						cur = con.cursor()
-						cur.execute('UPDATE players SET "' + column_tag + '"="' + column_tag + '"+' + str(j[3]) + ' WHERE name = "' + j[0] + '";')
+						cur.execute('UPDATE players SET "' + 
+							        column_tag+'"="'+column_tag+'"+'+str(j[3]) + 
+							        ' WHERE name = "' + j[0] + '";')

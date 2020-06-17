@@ -17,7 +17,7 @@ class textcol:
 #...
 #   GLOBALS
 #
-debug = True
+debug = 1 # 0=no output, 1=limited, 2=detailed
 short_run = False
 #
 #   DATABASE GLOBALS
@@ -192,7 +192,7 @@ def createNewDb():
 
 
 def updateDb():
-  if debug:
+  if debug >= 1:
     print("Updating existing", DATABASE, "\n")
 
   # Create connection to the DB
@@ -255,11 +255,11 @@ def get_il_leaderboard(game, category, level):
   #    - Platform played on
   #    - Variables (TO BE ADDED)
 
-  if(debug):
+  if debug >= 1:
     print("Scraping", textcol.INFO +level.name, ":", category.name + textcol.BODY, "...")
 
   out = []
-  if (debug):
+  if debug >= 2:
     print("http://speedrun.com/api/v1/leaderboards/{}/level/{}/{}?embed=variables".format(game.id, level.id, category.id))
   il_board = dt.Leaderboard(api, data=api.get("leaderboards/{}/level/{}/{}?embed=variables".format(game.id, level.id, category.id)))
 
@@ -282,7 +282,7 @@ def get_il_leaderboard(game, category, level):
 
       out.append([level.name, category.name, player_name, run_time, platform_id, medal_type, weblink])
   else:
-    if(debug):
+    if debug >= 2:
       print("                NO ENTRIES            ")
     pass
 
@@ -309,7 +309,7 @@ def add_il_run_to_db(run_data):
 
 def get_all_il_runs():
   # Start a counter to see how long this takes
-  if (debug):
+  if debug >= 1:
     start_time = time.time()
 
   # Get the game instance
@@ -354,7 +354,7 @@ def get_all_il_runs():
           bad_il_combo = True
 
       if bad_il_combo:
-        if(debug):
+        if debug >= 1:
           print(textcol.WARN + "Ignoring level:", level.name, ":", category.name + textcol.BODY)
         pass
       else:
@@ -365,7 +365,7 @@ def get_all_il_runs():
             print("Adding to DB:", i)
           add_il_run_to_db(i)
 
-  if (debug):
+  if debug >= 1:
     # Print out timed completion message
     total_time = time.time() - start_time
     timetaken = ""
@@ -410,8 +410,8 @@ def updatePlayers():
 
   # Insert each of those players into the 'players' table if not already present
   for i in curated_player_list:
-    if debug:
-      #print("Inserting player:", i)
+    if debug >= 2:
+      print("Inserting player:", i)
       pass
 
     with con:

@@ -36,7 +36,8 @@ def home():
             with con:
                 cur.execute('SELECT name, "' + q_col +
                             '" FROM players' +
-                            ' ORDER BY "' + q_col + '" DESC, name COLLATE NOCASE ASC')
+                            ' ORDER BY "' + q_col + '" DESC,' +
+                            ' name COLLATE NOCASE ASC')
 
             il_leaderboard = cur.fetchall()
 
@@ -47,7 +48,10 @@ def home():
     #print(all_leaderboards)
 
     try:
-        return render_template('main.html', titles = board_titles, all_boards=all_leaderboards, last_date = DATESTAMP)
+        return render_template('main.html',
+                               titles = board_titles,
+                               all_boards=all_leaderboards,
+                               last_date = DATESTAMP)
     except Exception as e:
         return str(e)
 
