@@ -75,10 +75,13 @@ def generate_scores(q_platform, q_level, q_category, q_medal):
 	number_players = len(il_leaderboard)
 	if number_players > len(prorated_maxima):
 		maximum_points = prorated_maxima[-1]
+	elif number_players == 0:
+		maximum_points = 0
 	else:
 		maximum_points = prorated_maxima[number_players-1]
 
 	if debug >= 2:
+		#print(il_leaderboard)
 		print("Number of players:", number_players)
 		print("Maximum score:", maximum_points)
 
@@ -111,7 +114,10 @@ set_db_column('players', DATESTAMP+"_n64_gold", '0')
 set_db_column('players', DATESTAMP+"_pc_any", '0')
 set_db_column('players', DATESTAMP+"_pc_gold", '0')
 
+# For each platform type
 for q_platform in il_platform_names:
+
+	# Set the string used in DB columns
 	if q_platform == 'N64':
 		platform_tag = '_n64'
 	elif q_platform == 'PC':
@@ -119,7 +125,10 @@ for q_platform in il_platform_names:
 	else:
 		platform_tag = "_PLATFORM"
 
+	# For each medal type
 	for q_medal in il_medal_names:
+
+		# Set the string used in DB columns
 		if q_medal == 'Gold Medal':
 			medal_tag = '_gold'
 		elif q_medal == 'Any Medal':
@@ -127,19 +136,23 @@ for q_platform in il_platform_names:
 		else:
 			medal_tag = "_MEDAL"
 
+		# Store the name of the DB column we are writing to in this pass
 		column_tag = DATESTAMP + platform_tag + medal_tag
 
-		#for q_level in ["Ambush at Mos Eisley"]:
+		# For each level
 		for q_level in il_level_names:
-			#q_category = "Y-Wing"
-			level_master_list = []
-			for q_category in il_category_names:
 
+			# List for storing sub-lists of times and scores
+			level_master_list = []
+
+			# For each ship 
+			for q_category in il_category_names:
 				#print(q_level, ":", q_category, "("+q_platform+", "+q_medal+")")
 				scoreboard = generate_scores(q_platform, q_level, q_category, q_medal)
 
 				level_master_list.append(scoreboard)
 
+			# Determine if there is a single fastest ship, get its list's index
 			fastest_time = 9999
 			fastest_idx = 0
 			fastest_unique = False
@@ -152,9 +165,12 @@ for q_platform in il_platform_names:
 						fastest_unique = True
 					elif level_master_list[i][0][1] == fastest_time:
 						fastest_unique = False
+
+			# if there is a single fastest ship
 			if fastest_unique:
+				# for all scores in the list for that ship
 				for i in level_master_list[fastest_idx]:
-					#print("WOO", i, i[3])
+					# multiply by fastest_level_multipliet
 					i[3] = i[3] * fastest_level_multiplier
 
 			if debug >= 2:
@@ -174,3 +190,21 @@ for q_platform in il_platform_names:
 						cur.execute('UPDATE players SET "' + 
 							        column_tag+'"="'+column_tag+'"+'+str(j[3]) + 
 							        ' WHERE name = "' + j[0] + '";')
+
+
+			for i in level_master_list:
+				if i:
+					# Get the score awarded to the fastest time
+					# i[0][-1]
+
+					# Create connection to the DB
+					con = lite.connect(DATABASE)
+					with con:
+						cur = con.cursor()
+						cur.execute('UPDATE players SET "' + 
+							        column_tag + '"="' + 
+							        column_tag + '"+' + str(i[0][-1]) + 
+							        ' WHERE name = "_max_possible";')
+
+# update max possible points
+# update ranking

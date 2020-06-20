@@ -163,6 +163,13 @@ def createNewDb():
                 "VALUES (?, ?)",
                 ['db_version', DATABASE_VERSION])
 
+  # Add creation date to metadata
+  with con:
+    cur = con.cursor()
+    cur.execute("REPLACE INTO metadata (field, value) " +
+                "VALUES (?, ?)",
+                ['db_created', DATESTAMP])
+
   # Create table for runs
   with con:
     cur = con.cursor()
@@ -361,7 +368,7 @@ def get_all_il_runs():
         # Get a LIST of details for all runs fitting the level/category 
         result = get_il_leaderboard(game, category, level)
         for i in result:
-          if debug:
+          if debug >= 2:
             print("Adding to DB:", i)
           add_il_run_to_db(i)
 

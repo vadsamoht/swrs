@@ -156,6 +156,9 @@ body{
     line-height: 1.5em;
     display: inline-flex;
 }
+#list-line.unused {
+    color: #666666;
+}
 #list-line:hover{
     background: #d7d7e4 !important;
     font-weight: bold;

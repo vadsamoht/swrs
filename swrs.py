@@ -15,9 +15,9 @@ with con:
     cur.execute('SELECT value FROM metadata WHERE field = "last_update";')
 
     DATESTAMP = cur.fetchall()[0][0]
-    #print(DATESTAMP)
 
 
+@app.route('/player')
 @app.route('/')
 def home():
     # Main page - show Player Search page
@@ -36,6 +36,7 @@ def home():
             with con:
                 cur.execute('SELECT name, "' + q_col +
                             '" FROM players' +
+                            ' WHERE name != "_max_possible"' +
                             ' ORDER BY "' + q_col + '" DESC,' +
                             ' name COLLATE NOCASE ASC')
 
@@ -64,6 +65,15 @@ def faq():
     except Exception as e:
         return str(e)
 
+
+@app.route('/player/<player_id>')
+def player(player_id):
+    # Player profile page
+    print(player_id)
+    try:
+        return render_template('player.html')
+    except Exception as e:
+        return str(e)
 
 
 @app.teardown_appcontext

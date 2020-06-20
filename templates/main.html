@@ -24,16 +24,22 @@
                 {% set playerlist = input_data%}
                 {% for line in range(all_boards[board]|length):%}
                     <div id="zebrastripes">
-                        <div id="list-line">
-                            <div id="list-segment" class="number">  {{ line+1 }}
+                        <a href="/player/{{ all_boards[board][line][0] }}">
+                            {% if all_boards[board][line][1] == 0 %}
+                            <div id="list-line" class="unused">
+                            {% else %}
+                            <div id="list-line">
+                            {% endif %}
+                                <div id="list-segment" class="number">  {{ line+1 }}
+                                </div>
+                                <div id="list-segment" class="rating">
+                                    {{ all_boards[board][line][1] }}
+                                </div>
+                                <div id="list-segment" class="name">
+                                    {{ all_boards[board][line][0] }}
+                                </div>
                             </div>
-                            <div id="list-segment" class="rating">
-                                {{ all_boards[board][line][1] }}
-                            </div>
-                            <div id="list-segment" class="name">
-                                {{ all_boards[board][line][0] }}
-                            </div>
-                        </div>
+                        </a>
                     </div>
                 {% endfor %}
             </div>
