@@ -109,26 +109,6 @@ body{
     font-style: normal;
 }
 
-#list-categories{
-}
-
-#list-cat-line{
-    margin: auto;
-    width: 100%;
-    display: block;
-    padding: 1px;
-}
-
-#cat{
-    background: #436559;
-    font-weight: bold;
-    color: #ffffff;
-    border-radius: 5px;
-    display: inline-block;
-    padding: 5px;
-    min-width: 50px;
-}
-
 #playerlist{
     margin: 5px 10px 20px 10px;
     background: #ffffff;
@@ -181,6 +161,10 @@ body{
     vertical-align: middle;
     padding: 0px 10px;
 }
+#list-segment.title {
+    text-align: center;
+    width: 100%;
+}
 #list-segment.number{
     width: 25px;
     padding: 0px 5px;
@@ -203,174 +187,6 @@ body{
     text-decoration: none;
     /*display: inline-flex !important;*/
 }
-span.GM{
-    color: #0080ff;
-    font-weight: bold;
-}
-span.IM{
-    color: #00b359;
-    font-weight: bold;
-}
-span.FM{
-    color: #ff7f00;
-    font-weight: bold;
-}
-span.CM{
-    color: #ff0080;
-    font-weight: bold;
-}
-span.WGM{
-    color: #0080ff;
-    font-weight: bold;
-}
-span.WIM{
-    color: #00b359;
-    font-weight: bold;
-}
-span.WFM{
-    color: #ff7f00;
-    font-weight: bold;
-}
-
-#stats-box{
-    font-size: 12pt;
-    border: 1px black solid;
-    display: inline-block;
-    border-radius: 20px 20px 0px 0px;
-    padding: 0 0 .5em 0;
-    overflow: hidden;
-    background: #f8f8f8;
-    vertical-align: top;
-    margin: 10px 0px;
-}
-#stats-box.dual{
-    width: 325px;
-}
-#stats-box.single{
-    width: 100%;
-}
-#stats-box-header{
-    background: #436559;
-    color: #ffffff;
-    text-align: center;
-    vertical-align: top;
-    display: inline-block;
-    width: 100%;
-    height: 40px;
-}
-#stats-box-header h2{
-    margin: .2em;
-}
-#stats-box-data{
-    padding: 10px;
-    height: .6em;
-}
-#stats-box-spacer{
-    width: 30px;
-    padding: 0px;
-    margin: 0px;
-    display: inline-block;
-}
-#stats-box-data-title{
-    display: inline-block;
-    float: left;
-    font-weight: bold;
-    margin-left: 2%;
-    width: 70%;
-    text-align: left;
-}
-#stats-box-data-value{
-    display: inline-block;
-    float: right;
-    width: 25%;
-    margin-right: 2%;
-    text-align: right;
-}
-#stats-box-data-col{
-    display: inline-block;
-    float: right;
-    width: 20%;
-    margin: 0px 1%;
-    text-align: center;
-}
-#stats-box-col-title{
-    display: inline-block;
-    float: left;
-    font-weight: bold;
-    margin-left: 2%;
-    width: 40%;
-    text-align: left;
-}
-#stats-box-data-inactive{
-    float: right;
-    text-align: right;
-    display: inline-block;
-    margin-right: 2px;
-    color: #cc0000;
-}
-#stats-box-website-title{
-    display: inline-block;
-    float: left;
-    font-weight: bold;
-    margin-left: 2%;
-}
-#stats-box-website-value{
-    display: inline;
-    float: right;
-    margin-right: 2%;
-    text-align: right;
-    overflow: all;
-}
-
-#ratings_chart_container{
-    width: 670px;
-    height: 420px;
-    padding: 10px;
-    background-color: #f8f8f8;
-    border: 2px solid #000000;
-    overflow: hidden;
-}
-
-#formbox{
-    height: 40px;
-    padding: 0px;
-    width: 100%;
-}
-
-input.css3button{
-    display: inline-block;
-    border: 0px solid #000000;
-    background: #436559;
-    color: #ffffff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    margin: 3px;
-    min-width: 100px;
-    height: 100%;
-    text-align: center;
-    font-weight: bold;
-    font-size: 14pt;
-}
-
-input.textfield{
-    width: 60%;
-    height: 100%;
-    font-size: 14pt;
-    border: 2px solid #d0d0d0;
-    padding: 0px 15px;
-    margin-right: 15px;
-    border-radius: 5px;
-}
-
-#sectionblurb{
-    margin: 25px 50px 0px 50px;
-}
-
-#search_error_message{
-    font-weight: bold;
-    font-style: italic;
-    text-align: center;
-}
 
 #footer{
     background: #dadada;
@@ -391,65 +207,11 @@ input.textfield{
     padding: 8px;
     opacity: 0.8;
 }
-#log-line {
-    width: 100%;
-    border: 0px black solid;
-    line-height: 1.0em;
-    font-size: 9pt;
-    padding: 2px;
-    display: inline-flex;
-    font-family: monospace;
-}
-#log-line:hover{
-    background: #d7d7e4 !important;
-    font-weight: bold;
-    position: relative;
-    -webkit-box-shadow: 0px 1px 10px 1px rgba(0,0,0,0.2);
-    -moz-box-shadow: 0px 1px 10px 1px rgba(0,0,0,0.2);
-    box-shadow: 0px 1px 10px 1px rgba(0,0,0,0.2);
-}
-.logLineLink {
-    text-decoration: none;
-    color: #000000;
-}
-#curList {
-    font-size: 10pt;
-}
-
-#helpContents {
-    border: 1px solid #000;
-    border-radius: 5px;
-    width: max-content;
-    padding: 10px;
-    background-color: #f0f0f0;
-}
-.codeSnippet {
-    border: 1px solid #000;
-    border-radius: 5px;
-    padding: 10px 10px 10px 30px;
-    font-family: courier new;
-    color: #fff;
-    font-weight: bold;
-    background-color: #002a;
-    margin: 10px;
-}
-.codetext {
-    font-family: couriter-new;
-    background-color: #00000012;
-    padding: 0px 5px;
-    border-radius: 3px;
-    border: 1px solid #0003;
-}
 
 #lastupdate p {
     font-weight: normal;
     padding: 0;
     margin: 5px 0 0 0;
-}
-
-#list-segment.title {
-    text-align: center;
-    width: 100%;
 }
 
 table {
