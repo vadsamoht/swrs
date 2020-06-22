@@ -5,7 +5,7 @@ app = Flask(__name__)
 application = app
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 DATABASE = './runs_db.sqlite'
-
+debug = False
 
 # Create connection to the DB
 con = lite.connect(DATABASE)
@@ -69,7 +69,41 @@ def faq():
 @app.route('/player/<player_id>')
 def player(player_id):
     # Player profile page
-    print(player_id)
+    if debug:
+        print(player_id)
+
+
+            
+    # Create connection to the DB
+    con = lite.connect(DATABASE)
+    cur = con.cursor()
+    with con:
+        cur.execute('PRAGMA table_info(players)')
+    
+    col_names = cur.fetchall()
+
+
+    col_dates = []
+    for i in col_names:
+        if '_any' in i[1] or '_gold' in i[1]:
+            col_dates.appendi[1][:8]
+    print(col_dates)
+
+    '''
+    for q_console in ['pc', 'n64']:
+        for q_medal in ['any', 'gold']:
+            q_col = DATESTAMP+'_'+q_console+'_'+q_medal
+
+            # Create connection to the DB
+            con = lite.connect(DATABASE)
+            cur = con.cursor()
+            with con:
+                cur.execute('SELECT name, "' + q_col +
+                            '" FROM players' +
+                            ' WHERE name != "_max_possible"' +
+                            ' ORDER BY "' + q_col + '" DESC,' +
+                            ' name COLLATE NOCASE ASC')
+    '''
     try:
         return render_template('player.html')
     except Exception as e:
