@@ -52,27 +52,12 @@
             </div>
 {% endmacro %}
 
-{% macro footer() %}
-            </div>
-            <div id="footertext">
-                <!--<span title="v0.13 Ackbar">SW:RS Ranking v0.13, 16-Jun-2020</span>-->
-                <!--<span title="v0.18 Biggs">SW:RS Ranking v0.18, 17-Jun-2020</span>-->
-                <span title="v0.26 Celchu">SW:RS Ranking v0.26, 23-Jun-2020</span>
-            </div>
-        </div>
-
-    </div>
-
-    </body>
-</html>
-{% endmacro %}
-
 {% macro player_chart(input_data) %}
-    {% for i in input_data %}
+    <!--{% for i in input_data %}
         <p>{{ i }}</p>
-    {% endfor %}
+    {% endfor %}-->
 
-    <canvas id="myChart" width="400" height="400"></canvas>
+    <canvas id="myChart" width="400" height="300"></canvas>
     <script>
     var ctx = document.getElementById('myChart').getContext('2d');
     var myChart = new Chart(ctx, {
@@ -84,30 +69,86 @@
                 {% endfor %}
                 ""],
             datasets: [{
-                label: '# of Votes',
+                label: 'PC Any',
+                data: [
+                    {% for i in input_data[1] %}
+                        {{ i ~ ',' }}
+                    {% endfor %}
+                ],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.0)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)'
+                ],
+                pointBackgroundColor: 'rgba(54, 162, 235, .6)',
+                pointBorderColor: 'rgba(54, 162, 235, 1)',
+                pointHoverBackgroundColor: 'rgba(54, 162, 235, 1)',
+                pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
+                pointRadius: 3,
+                pointBorderWidth: 1,
+                borderWidth: 3
+            },{
+                label: 'PC Gold',
+                data: [
+                    {% for i in input_data[2] %}
+                        {{ i ~ ',' }}
+                    {% endfor %}
+                ],
+                backgroundColor: [
+                    'rgba(121, 255, 97, 0.0)'
+                ],
+                borderColor: [
+                    'rgba(121, 255, 97, 1)'
+                ],
+                pointBackgroundColor: 'rgba(121, 255, 97, .6)',
+                pointBorderColor: 'rgba(121, 255, 97, 1)',
+                pointHoverBackgroundColor: 'rgba(121, 255, 97, 1)',
+                pointHoverBorderColor: 'rgba(121, 255, 97, 1)',
+                pointRadius: 3,
+                pointBorderWidth: 1,
+                borderWidth: 3
+            },{
+                label: 'N64 Any',
                 data: [
                     {% for i in input_data[3] %}
                         {{ i ~ ',' }}
                     {% endfor %}
                 ],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
+                    'rgba(255, 99, 132, 0.0)'
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
+                    'rgba(255, 99, 132, 1)'
                 ],
-                borderWidth: 1
-            }]
+                pointBackgroundColor: 'rgba(255, 99, 132, .6)',
+                pointBorderColor: 'rgba(255, 99, 132, 1)',
+                pointHoverBackgroundColor: 'rgba(255, 99, 132, 1)',
+                pointHoverBorderColor: 'rgba(255, 99, 132, 1)',
+                pointRadius: 3,
+                pointBorderWidth: 1,
+                borderWidth: 3
+            },{
+                label: 'N64 Gold',
+                data: [
+                    {% for i in input_data[4] %}
+                        {{ i ~ ',' }}
+                    {% endfor %}
+                ],
+                backgroundColor: [
+                    'rgba(255, 179, 97, 0.0)'
+                ],
+                borderColor: [
+                    'rgba(255, 179, 97, 1)'
+                ],
+                pointBackgroundColor: 'rgba(255, 179, 97, .6)',
+                pointBorderColor: 'rgba(255, 179, 97, 1)',
+                pointHoverBackgroundColor: 'rgba(255, 179, 97, 1)',
+                pointHoverBorderColor: 'rgba(255, 179, 97, 1)',
+                pointRadius: 3,
+                pointBorderWidth: 1,
+                borderWidth: 3
+            },]
         },
         options: {
             scales: {
@@ -121,3 +162,20 @@
     });
     </script>
 {% endmacro %}
+
+{% macro footer() %}
+            </div>
+            <div id="footertext">
+                <!--<span title="v0.13 Ackbar">SW:RS Ranking v0.13, 16-Jun-2020</span>-->
+                <!--<span title="v0.18 Biggs">SW:RS Ranking v0.18, 17-Jun-2020</span>-->
+                <!--<span title="v0.26 Celchu">SW:RS Ranking v0.26, 23-Jun-2020</span>-->
+                <span title="v0.35 Darklighter">SW:RS Ranking v0.35, 24-Jun-2020</span>
+            </div>
+        </div>
+
+    </div>
+
+    </body>
+</html>
+{% endmacro %}
+

@@ -179,6 +179,10 @@ body{
     width: 65px;
     text-align: center;
 }
+#list-segment.profile-score {
+    width: 85px;
+    text-align: center;
+}
 #list-segment.name{
     width: 200px;
     padding-left: 15px;
@@ -228,4 +232,28 @@ table {
 th {
     border-bottom: 1px solid #000000;
     padding: 5px 10px;
+}
+#scores-container {
+    padding: 10px;
+}
+.current-score {
+    border: 1px solid #000000;
+    border-radius: 5px;
+    display: inline-block;
+    width: 130px;
+    text-align: center;
+    margin: 10px;
+    font-weight: bold;
+}
+.current-score-header {
+    padding: 5px;
+    background: #2d2d2d;
+    color: #ffffff;
+}
+.current-score-body {
+    padding: 15px;
+    font-size: 1.25em;
+}
+#ratings-chart-container {
+    margin: 25px;
 }

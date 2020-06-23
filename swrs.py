@@ -90,6 +90,7 @@ def player(player_id):
 
     scoredata = []
     scoredata.append(up_dates)
+    latest_scores = []
 
     for q_console in ['pc', 'n64']:
         for q_medal in ['any', 'gold']:
@@ -107,13 +108,26 @@ def player(player_id):
                                 ' FROM players' +
                                 ' WHERE name="' + player_id + '";')
                 score_result = cur.fetchall()
-
+                
                 current_list.append(score_result[0][0])
+
             scoredata.append(current_list)
+
     #print(scoredata)
 
+    for i in scoredata:
+        latest_scores.append(i[-1])
+
     try:
-        return render_template('player.html', score_history=scoredata, name=player_id)
+        return render_template('player.html',
+                               score_history=scoredata,
+                               name=player_id,
+                               scores=latest_scores,
+                               columns=["Date",
+                                        "PC Any Medal",
+                                        "PC Gold Medal",
+                                        "N64 Any Medal",
+                                        "N64 Gold Medal"])
     except Exception as e:
         return str(e)
 

@@ -3,18 +3,16 @@
 
 {{ header(name +" | SWRS") }}
 
-{{ title("Player profile: " + name) }}
-
-    <br />
+{{ title("Player profile: " + name, scores[0]) }}
 
     <div id="about">
-            <!--    scoredata FORMAT:
-                    =================
-                    [0] = dates
-                    [1] = _pc_any
-                    [2] = _pc_gold
-                    [3] = _n64_any
-                    [4] = _n64_gold-->
+            <!--    scores & scoredata FORMAT:
+                       ==================
+                        [0] = dates
+                        [1] = _pc_any
+                        [2] = _pc_gold
+                        [3] = _n64_any
+                        [4] = _n64_gold-->
 
             <!--
             <div id="" style="border: 3px solid #ff0000; color: #ff0000; text-align: center; ">
@@ -33,17 +31,41 @@
         
             -->
 
+        <!-- Latest scores display -->
+        <div id="scores-container">
+            {% for index in range(1, scores|length):%}
+                <div class="current-score">
+                    <div class="current-score-header">
+                        {{ columns[index] }}
+                    </div>
+                    <div class="current-score-body">
+                        {{ scores[index] }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+
+        <!-- Graph of historical player scores -->
         <center>
-            <div id="ratings_chart_container">
+            <div id="ratings-chart-container">
                 {{ player_chart(score_history) }}
             </div>
         </center>
 
+
+        <!-- Table of all player scores -->
+        <!--
         <div id="playerlist" style="max-width: none !important;">
             <div id="list-line" class="header">
-                {% for title in ['Date', 'PC Any', 'PC Gold', 'N64 Any', 'N64 Gold'] %}
-                <div id="list-segment" class="datestamp">
-                    {{ title }}
+                {% for title in columns %}
+                    {% if title == "Date" %}
+                        <div id="list-segment" class="datestamp">
+                        {{ title }}
+                    {% else %}
+                        <div id="list-segment" class="profile-score">
+                        {{ title[:-6] }}
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
@@ -53,22 +75,23 @@
                     <div id="list-segment" class="datestamp">
                         {{ score_history[0][data] }}
                     </div>
-                    <div id="list-segment" class="datestamp">
+                    <div id="list-segment" class="profile-score">
                         {{ score_history[1][data] }}
                     </div>
-                    <div id="list-segment" class="datestamp">
+                    <div id="list-segment" class="profile-score">
                         {{ score_history[2][data] }}
                     </div>
-                    <div id="list-segment" class="datestamp">
+                    <div id="list-segment" class="profile-score">
                         {{ score_history[3][data] }}
                     </div>
-                    <div id="list-segment" class="datestamp">
+                    <div id="list-segment" class="profile-score">
                         {{ score_history[4][data] }}
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
+        -->
 
     </div>
 
