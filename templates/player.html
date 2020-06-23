@@ -1,4 +1,4 @@
-{% from "macros.html" import header, footer, categories, title %}
+{% from "macros.html" import header, footer, categories, title, player_chart %}
 
 
 {{ header(name +" | SWRS") }}
@@ -33,37 +33,42 @@
         
             -->
 
+        <center>
+            <div id="ratings_chart_container">
+                {{ player_chart(score_history) }}
+            </div>
+        </center>
 
-                <div id="playerlist" style="max-width: none !important;">
-                    <div id="list-line" class="header">
-                        {% for title in ['Date', 'PC Any', 'PC Gold', 'N64 Any', 'N64 Gold'] %}
-                        <div id="list-segment" class="datestamp">
-                            {{ title }}
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% for data in range(score_history[0]|length):%}
-                    <div id="zebrastripes">
-                        <div id="list-line">
-                            <div id="list-segment" class="datestamp">
-                                {{ score_history[0][data] }}
-                            </div>
-                            <div id="list-segment" class="datestamp">
-                                {{ score_history[1][data] }}
-                            </div>
-                            <div id="list-segment" class="datestamp">
-                                {{ score_history[2][data] }}
-                            </div>
-                            <div id="list-segment" class="datestamp">
-                                {{ score_history[3][data] }}
-                            </div>
-                            <div id="list-segment" class="datestamp">
-                                {{ score_history[4][data] }}
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
+        <div id="playerlist" style="max-width: none !important;">
+            <div id="list-line" class="header">
+                {% for title in ['Date', 'PC Any', 'PC Gold', 'N64 Any', 'N64 Gold'] %}
+                <div id="list-segment" class="datestamp">
+                    {{ title }}
                 </div>
+                {% endfor %}
+            </div>
+            {% for data in range(score_history[0]|length):%}
+            <div id="zebrastripes">
+                <div id="list-line">
+                    <div id="list-segment" class="datestamp">
+                        {{ score_history[0][data] }}
+                    </div>
+                    <div id="list-segment" class="datestamp">
+                        {{ score_history[1][data] }}
+                    </div>
+                    <div id="list-segment" class="datestamp">
+                        {{ score_history[2][data] }}
+                    </div>
+                    <div id="list-segment" class="datestamp">
+                        {{ score_history[3][data] }}
+                    </div>
+                    <div id="list-segment" class="datestamp">
+                        {{ score_history[4][data] }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
 
     </div>
 
