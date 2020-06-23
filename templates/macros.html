@@ -46,7 +46,7 @@
                     </h1>
                     {% if date %}
                     <div id="lastupdate">
-                        <p>Last leaderboard update: {{date}}</p>
+                        <p>Last leaderboard update: {{ date[:4] }}-{{ date[4:6] }}-{{ date[6:] }}</p>
                     </div>
                     {% endif %}
             </div>
@@ -65,7 +65,7 @@
         data: {
             labels: [
                 {% for i in input_data[0] %}
-                    {{ '"'|safe ~ i ~ '",'| safe }}
+                    {{ '"'|safe ~ i[:4] ~ "-" ~ i[4:6] ~ "-" ~ i[6:] ~ '",'| safe }}
                 {% endfor %}
                 ""],
             datasets: [{
@@ -76,15 +76,15 @@
                     {% endfor %}
                 ],
                 backgroundColor: [
-                    'rgba(54, 162, 235, 0.0)'
+                    'rgba(114, 147, 203, 0.0)'
                 ],
                 borderColor: [
-                    'rgba(54, 162, 235, 1)'
+                    'rgba(114, 147, 203, 1)'
                 ],
-                pointBackgroundColor: 'rgba(54, 162, 235, .6)',
-                pointBorderColor: 'rgba(54, 162, 235, 1)',
-                pointHoverBackgroundColor: 'rgba(54, 162, 235, 1)',
-                pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
+                pointBackgroundColor: 'rgba(114, 147, 203, .6)',
+                pointBorderColor: 'rgba(114, 147, 203, 1)',
+                pointHoverBackgroundColor: 'rgba(114, 147, 203, 1)',
+                pointHoverBorderColor: 'rgba(114, 147, 203, 1)',
                 pointRadius: 3,
                 pointBorderWidth: 1,
                 borderWidth: 3
@@ -96,15 +96,15 @@
                     {% endfor %}
                 ],
                 backgroundColor: [
-                    'rgba(121, 255, 97, 0.0)'
+                    'rgba(132, 186, 91, 0.0)'
                 ],
                 borderColor: [
-                    'rgba(121, 255, 97, 1)'
+                    'rgba(132, 186, 91, 1)'
                 ],
-                pointBackgroundColor: 'rgba(121, 255, 97, .6)',
-                pointBorderColor: 'rgba(121, 255, 97, 1)',
-                pointHoverBackgroundColor: 'rgba(121, 255, 97, 1)',
-                pointHoverBorderColor: 'rgba(121, 255, 97, 1)',
+                pointBackgroundColor: 'rgba(132, 186, 91, .6)',
+                pointBorderColor: 'rgba(132, 186, 91, 1)',
+                pointHoverBackgroundColor: 'rgba(132, 186, 91, 1)',
+                pointHoverBorderColor: 'rgba(132, 186, 91, 1)',
                 pointRadius: 3,
                 pointBorderWidth: 1,
                 borderWidth: 3
@@ -116,15 +116,15 @@
                     {% endfor %}
                 ],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.0)'
+                    'rgba(211, 94, 96, 0.0)'
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)'
+                    'rgba(211, 94, 96, 1)'
                 ],
-                pointBackgroundColor: 'rgba(255, 99, 132, .6)',
-                pointBorderColor: 'rgba(255, 99, 132, 1)',
-                pointHoverBackgroundColor: 'rgba(255, 99, 132, 1)',
-                pointHoverBorderColor: 'rgba(255, 99, 132, 1)',
+                pointBackgroundColor: 'rgba(211, 94, 96, .6)',
+                pointBorderColor: 'rgba(211, 94, 96, 1)',
+                pointHoverBackgroundColor: 'rgba(211, 94, 96, 1)',
+                pointHoverBorderColor: 'rgba(211, 94, 96, 1)',
                 pointRadius: 3,
                 pointBorderWidth: 1,
                 borderWidth: 3
@@ -136,15 +136,15 @@
                     {% endfor %}
                 ],
                 backgroundColor: [
-                    'rgba(255, 179, 97, 0.0)'
+                    'rgba(225, 151, 76, 0.0)'
                 ],
                 borderColor: [
-                    'rgba(255, 179, 97, 1)'
+                    'rgba(225, 151, 76, 1)'
                 ],
-                pointBackgroundColor: 'rgba(255, 179, 97, .6)',
-                pointBorderColor: 'rgba(255, 179, 97, 1)',
-                pointHoverBackgroundColor: 'rgba(255, 179, 97, 1)',
-                pointHoverBorderColor: 'rgba(255, 179, 97, 1)',
+                pointBackgroundColor: 'rgba(225, 151, 76, .6)',
+                pointBorderColor: 'rgba(225, 151, 76, 1)',
+                pointHoverBackgroundColor: 'rgba(225, 151, 76, 1)',
+                pointHoverBorderColor: 'rgba(225, 151, 76, 1)',
                 pointRadius: 3,
                 pointBorderWidth: 1,
                 borderWidth: 3
@@ -154,7 +154,8 @@
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        max: 5000
                     }
                 }]
             }

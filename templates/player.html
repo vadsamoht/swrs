@@ -34,14 +34,23 @@
         <!-- Latest scores display -->
         <div id="scores-container">
             {% for index in range(1, scores|length):%}
-                <div class="current-score">
-                    <div class="current-score-header">
-                        {{ columns[index] }}
+                {% if scores[index] == 0 %}
+                    {% set shaded = "shaded" %}
+                {% else %}
+                    {% set shaded = "" %}
+                {% endif %}
+
+                <a href="/player/{{ name }}/{{ columns[index][:columns[index].rfind(' ')].replace(' ', '_').lower() }}">
+                    <div class="current-score {{ shaded }}">
+                        <div class="current-score-header">
+                            {{ columns[index] }}
+                        </div>
+
+                        <div class="current-score-body">
+                            {{ scores[index] }}
+                        </div>
                     </div>
-                    <div class="current-score-body">
-                        {{ scores[index] }}
-                    </div>
-                </div>
+                </a>
             {% endfor %}
         </div>
         

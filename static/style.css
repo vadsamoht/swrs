@@ -236,6 +236,10 @@ th {
 #scores-container {
     padding: 10px;
 }
+#scores-container a {
+    color: #000;
+    text-decoration: none;
+}
 .current-score {
     border: 1px solid #000000;
     border-radius: 5px;
@@ -244,6 +248,9 @@ th {
     text-align: center;
     margin: 10px;
     font-weight: bold;
+}
+.current-score:hover {
+    background: #99999940;
 }
 .current-score-header {
     padding: 5px;
@@ -256,4 +263,7 @@ th {
 }
 #ratings-chart-container {
     margin: 25px;
+}
+.shaded {
+    opacity: 40%;
 }

@@ -132,6 +132,18 @@ def player(player_id):
         return str(e)
 
 
+@app.route('/player/<player_id>/<category>')
+def player_cat(player_id, category):
+    # Player category (e.g. PC,Gold) page
+    try:
+        return render_template('player-category.html',
+                               name=player_id,
+                               category=category,
+                               last_update=DATESTAMP)
+    except Exception as e:
+        return str(e)
+
+
 @app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
