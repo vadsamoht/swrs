@@ -183,6 +183,13 @@ def createNewDb():
                 "medal           text," +
                 "src_link        text)")
 
+  # Create table for list of dates updated
+  with con:
+    cur = con.cursor()
+    cur.execute("CREATE TABLE IF NOT EXISTS update_datestamps (" +
+                "id              integer primary key,"
+                "date            text)")
+
   # Create table for players, without score_date cols (added to updateDB()) due 
   # to lack of IF NOT EXISTS on ALTER TABLE commands.
   with con:
@@ -204,6 +211,13 @@ def updateDb():
 
   # Create connection to the DB
   con = lite.connect(DATABASE)
+
+  # Add database update date
+  with con:
+    cur = con.cursor()
+    cur.execute("INSERT INTO update_datestamps (date) " +
+                "VALUES (?)",
+                [DATESTAMP])
 
   # Drop old table for date if present
   with con:

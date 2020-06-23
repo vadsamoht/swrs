@@ -165,6 +165,10 @@ body{
     text-align: center;
     width: 100%;
 }
+#list-segment.datestamp {
+    text-align: center;
+    width: 100px;
+}
 #list-segment.number{
     width: 25px;
     padding: 0px 5px;

@@ -108,6 +108,8 @@ def set_db_column(table, col_name, value):
 		cur = con.cursor()
 		cur.execute(cmd)
 
+	return
+
 # Set values of all players in today's column to 0
 set_db_column('players', DATESTAMP+"_n64_any", '0')
 set_db_column('players', DATESTAMP+"_n64_gold", '0')

@@ -78,34 +78,42 @@ def player(player_id):
     con = lite.connect(DATABASE)
     cur = con.cursor()
     with con:
-        cur.execute('PRAGMA table_info(players)')
+        cur.execute('SELECT date FROM update_datestamps')
     
     col_names = cur.fetchall()
-
-
-    col_dates = []
+    
+    up_dates = []
     for i in col_names:
-        if '_any' in i[1] or '_gold' in i[1]:
-            col_dates.appendi[1][:8]
-    print(col_dates)
+        if i[0] not in up_dates and i[0] != None:
+            up_dates.append(i[0])
+    #print(up_dates)
 
-    '''
+    scoredata = []
+    scoredata.append(up_dates)
+
     for q_console in ['pc', 'n64']:
         for q_medal in ['any', 'gold']:
-            q_col = DATESTAMP+'_'+q_console+'_'+q_medal
+            current_list = []
 
-            # Create connection to the DB
-            con = lite.connect(DATABASE)
-            cur = con.cursor()
-            with con:
-                cur.execute('SELECT name, "' + q_col +
-                            '" FROM players' +
-                            ' WHERE name != "_max_possible"' +
-                            ' ORDER BY "' + q_col + '" DESC,' +
-                            ' name COLLATE NOCASE ASC')
-    '''
+            for date in up_dates:
+                q_col = date+'_'+q_console+'_'+q_medal
+                #print(q_col)
+                
+                # Create connection to the DB
+                con = lite.connect(DATABASE)
+                cur = con.cursor()
+                with con:
+                    cur.execute('SELECT "' + q_col + '"' +
+                                ' FROM players' +
+                                ' WHERE name="' + player_id + '";')
+                score_result = cur.fetchall()
+
+                current_list.append(score_result[0][0])
+            scoredata.append(current_list)
+    #print(scoredata)
+
     try:
-        return render_template('player.html')
+        return render_template('player.html', score_history=scoredata, name=player_id)
     except Exception as e:
         return str(e)
 
