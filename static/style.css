@@ -267,3 +267,27 @@ th {
 .shaded {
     opacity: 40%;
 }
+
+#runs-table{
+    border: 5px solid #000000;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.runs-table-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: stretch;
+}
+.runs-table-timebox {
+    margin: 1px;
+    width: 75px;
+    line-height: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid #000000;
+    text-align: center;
+    vertical-align: middle;
+}

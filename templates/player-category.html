@@ -3,14 +3,58 @@
 
 {{ header(name +" | SWRS") }}
 
-{{ title(name + ": " + category, last_update) }}
+{{ title(name + ": " + platform + ", " + medal, last_update) }}
+
+{% set level_acronyms = ["AaME",
+"RoB",
+"SftN",
+"DaC",
+"LoGV",
+"TJM",
+"ICY",
+"AK2",
+"RoK",
+"PoK",
+"BAT",
+"EFF",
+"BoC",
+"RoS",
+"MSR",
+"TBoC",
+"DSTR",
+"Hoth"] %}
 
     <div id="about">
-            <div id="" style="border: 3px solid #ff0000; color: #ff0000; background: #ff000008; text-align: center; ">
-                <h2>Not yet implemented</h2>
-            </div>
 
-            <p><img src="/static/comingsoon.jpg"></p>
+            <div id="runs-table">
+                <div class="runs-table-row">
+                    <div class="runs-table-timebox"> </div>
+                    <div class="runs-table-timebox">X</div>
+                    <div class="runs-table-timebox">Y</div>
+                    <div class="runs-table-timebox">A</div>
+                    <div class="runs-table-timebox">V</div>
+                    <div class="runs-table-timebox">SS</div>
+                    <div class="runs-table-timebox">MF</div>
+                    <div class="runs-table-timebox">TIE</div>
+                    <div class="runs-table-timebox">N1</div>
+                </div>
+            {% for i in range(runs|length): %}
+                {% set level = runs[i] %}
+
+                <div class="runs-table-row">
+                <div class="runs-table-timebox">{{ level_acronyms[i] }}</div>
+                {% for ship in level %}
+                    <div class="runs-table-timebox">
+                        {% if ship: %}
+                            <a href="{{ ship[3] }}">{{ ship[2] }}</a>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                </div>
+            {% endfor %}
+            </div>
 
     </div>
 

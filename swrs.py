@@ -7,6 +7,33 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 DATABASE = './runs_db.sqlite'
 debug = False
 
+il_category_names = ["X-Wing",
+                     "Y-Wing",
+                     "A-Wing",
+                     "V-Wing",
+                     "Speeder",
+                     "Millennium Falcon",
+                     "TIE Interceptor",
+                     "Naboo Starfighter"]
+il_level_names = ["Ambush at Mos Eisley",
+                  "Rendezvous on Barkhesh",
+                  "The Search for the Nonnah",
+                  "Defection at Corellia",
+                  "Liberation of Gerrard V",
+                  "The Jade Moon",
+                  "Imperial Construction Yards",
+                  "Assault on Kile II",
+                  "Rescue on Kessel",
+                  "Prisons of Kessel",
+                  "Battle Above Taloraan",
+                  "Escape from Fest",
+                  "Blockade on Chandrila",
+                  "Raid on Sullust",
+                  "Moff Seerdon's Revenge",
+                  "The Battle of Calamari",
+                  "The Death Star Trench Run",
+                  "The Battle of Hoth"]
+
 # Create connection to the DB
 con = lite.connect(DATABASE)
 cur = con.cursor()
@@ -15,6 +42,19 @@ with con:
     cur.execute('SELECT value FROM metadata WHERE field = "last_update";')
 
     DATESTAMP = cur.fetchall()[0][0]
+
+def convert_seconds(in_time):
+    print(in_time)
+    out_time = 'ERR'
+    secs = in_time % 60
+    mins = (in_time - secs) // 60
+
+    if secs < 10:
+        secs = '0' + str(secs)
+
+    out_time = str(mins) + ':' + str(secs)
+
+    return out_time
 
 
 @app.route('/player')
@@ -135,10 +175,72 @@ def player(player_id):
 @app.route('/player/<player_id>/<category>')
 def player_cat(player_id, category):
     # Player category (e.g. PC,Gold) page
+
+    # Create connection to the DB
+    con = lite.connect(DATABASE)
+
+    # Add update date to metadata
+    with con:
+        cur = con.cursor()
+        cur.execute('SELECT value FROM metadata ' +
+                    'WHERE field = "last_update"')
+    last_up = cur.fetchall()[0][0]
+
+    # parse category id to variables
+    tag = last_up + '_' + category
+    
+    if category[0:2] == 'pc':
+        console = "PC"
+    elif category[0:3] == 'n64':
+        console = 'N64'
+    else:
+        console = 'CONSOLE?'
+
+    if category[-3:] == 'any':
+        medal_type = "Any Medal"
+    elif category[-4:] == 'gold':
+        medal_type = 'Gold Medal'
+    else:
+        medal_type = 'MEDAL?'
+
+    runs = []
+    for lev in il_level_names:
+        level_array = []
+
+        for ship in il_category_names:
+            # Get all runs matching the criteria
+            cur = con.cursor()
+            with con:
+                cur.execute('SELECT level, category, time, "src_link" ' +
+                            'FROM il_runs_' + last_up + ' ' +
+                            'WHERE player = "' + player_id + '" AND ' +
+                            'platform = "' + console + '" AND ' +
+                            'level = "' + lev + '" AND ' +
+                            'category = "' + ship + '" AND ' +
+                            'medal = "' + medal_type + '";')    
+            run = cur.fetchall()
+            #print(run)
+            if run:
+                run = list(run[0])
+                print(run)
+                run[2] = convert_seconds(run[2])
+            level_array.append(run)
+
+        runs.append(level_array)
+
+
+    #print(runs)
+
+    for i in runs:
+        print(i)
+        #print(i, convert_seconds(i[2]))
+    
     try:
         return render_template('player-category.html',
                                name=player_id,
-                               category=category,
+                               medal=medal_type,
+                               platform=console,
+                               runs=runs,
                                last_update=DATESTAMP)
     except Exception as e:
         return str(e)
