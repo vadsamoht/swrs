@@ -1,47 +1,17 @@
 import sqlite3 as lite
 from datetime import date
 
+from globalvariables import *
+
 debug = 1
 
 prorated_maxima = [25, 35, 44, 52, 59, 65, 70, 75, 79, 83, 87, 90, 93, 95, 97, 98, 99, 100]
 #prorated_maxima2 = [25, 40, 50, 59, 67, 74, 80, 85, 89, 92, 95, 97, 99, 100]
 fastest_level_multiplier = 3
 
-DATABASE = './runs_db.sqlite'
-DATESTAMP = date.today().strftime("%Y%m%d")
-
+# Overwrite as the formate needed here is different (TODO: fix this)
 il_platform_names = ["N64",
                      "PC"]
-il_medal_names = ["Any Medal",
-                  "Gold Medal"]
-il_category_names = ["X-Wing",
-                     "Y-Wing",
-                     "A-Wing",
-                     "V-Wing",
-                     "Speeder",
-                     "Millennium Falcon",
-                     "TIE Interceptor",
-                     "Naboo Starfighter",
-                     "T-16 Skyhopper"]
-il_level_names = ["Ambush at Mos Eisley",
-                  "Rendezvous on Barkhesh",
-                  "The Search for the Nonnah",
-                  "Defection at Corellia",
-                  "Liberation of Gerrard V",
-                  "The Jade Moon",
-                  "Imperial Construction Yards",
-                  "Assault on Kile II",
-                  "Rescue on Kessel",
-                  "Prisons of Kessel",
-                  "Battle Above Taloraan",
-                  "Escape from Fest",
-                  "Blockade on Chandrila",
-                  "Raid on Sullust",
-                  "Moff Seerdon's Revenge",
-                  "The Battle of Calamari",
-                  "Beggar's Canyon",
-                  "The Death Star Trench Run",
-                  "The Battle of Hoth"]
 
 def calc_score(position, maximum):
     if position == 1:

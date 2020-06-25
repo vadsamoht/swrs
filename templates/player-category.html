@@ -21,6 +21,7 @@
 "RoS",
 "MSR",
 "TBoC",
+"BC",
 "DSTR",
 "Hoth"] %}
 
@@ -41,7 +42,7 @@
             {% for i in range(runs|length): %}
                 {% set level = runs[i] %}
 
-                <div class="runs-table-row">
+                <div class="runs-table-row {{ level_acronyms[i] }}">
                 <div class="runs-table-timebox">{{ level_acronyms[i] }}</div>
                 {% for ship in level %}
                     <div class="runs-table-timebox">

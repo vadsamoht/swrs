@@ -4,35 +4,12 @@ import sqlite3 as lite
 app = Flask(__name__)
 application = app
 app.config['TEMPLATES_AUTO_RELOAD'] = True
-DATABASE = './runs_db.sqlite'
+
+from globalvariables import *
+
 debug = False
 
-il_category_names = ["X-Wing",
-                     "Y-Wing",
-                     "A-Wing",
-                     "V-Wing",
-                     "Speeder",
-                     "Millennium Falcon",
-                     "TIE Interceptor",
-                     "Naboo Starfighter"]
-il_level_names = ["Ambush at Mos Eisley",
-                  "Rendezvous on Barkhesh",
-                  "The Search for the Nonnah",
-                  "Defection at Corellia",
-                  "Liberation of Gerrard V",
-                  "The Jade Moon",
-                  "Imperial Construction Yards",
-                  "Assault on Kile II",
-                  "Rescue on Kessel",
-                  "Prisons of Kessel",
-                  "Battle Above Taloraan",
-                  "Escape from Fest",
-                  "Blockade on Chandrila",
-                  "Raid on Sullust",
-                  "Moff Seerdon's Revenge",
-                  "The Battle of Calamari",
-                  "The Death Star Trench Run",
-                  "The Battle of Hoth"]
+
 
 # Create connection to the DB
 con = lite.connect(DATABASE)
