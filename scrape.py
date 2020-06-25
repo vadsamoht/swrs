@@ -8,12 +8,8 @@ from datetime import date
 import srcomapi, srcomapi.datatypes as dt # pip3 install srcomapi
 api = srcomapi.SpeedrunCom(); api.debug = 0
 
-class textcol:
-    INFO = '\033[93m' # yellow
-    BODY = '\033[0m' # white
-    WARN = '\033[91m' # red
-    OK = '\033[92m' # green
 
+from globalvariables import *
 #...
 #   GLOBALS
 #
