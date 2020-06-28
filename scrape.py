@@ -135,7 +135,7 @@ def updateDb():
   return
 
 
-def get_il_leaderboard(game, category, level):
+def get_il_leaderboard(game, category, level, medal_type='NONE'):
   # Takes in a GAME being run, a CATEGORY (e.g. X-Wing) and a LEVEL (e.g. AaME) 
   # and returns for each run on the leaderboard:
   #    - Player Name
@@ -143,13 +143,25 @@ def get_il_leaderboard(game, category, level):
   #    - Platform played on
   #    - Variables (TO BE ADDED)
 
+
+  if medal_type == "z197emjl":
+    medal_name = "Any"
+  elif medal_type == "p123jdvl":
+    medal_name = "Gold"
+  else:
+    medal_name = "Unknown"
+
+  medal_hash = medal_type
+
   if debug >= 1:
-    print("Scraping", textcol.INFO +level.name, ":", category.name + textcol.BODY, "...")
+    print("Requesting", textcol.INFO + level.name+":", category.name+"," , medal_name, "Medal" + textcol.BODY, "...")
+
 
   out = []
+  req = "leaderboards/{}/level/{}/{}?var-78966vq8={}&embed=variables".format(game.id, level.id, category.id, medal_hash)
   if debug >= 2:
-    print("http://speedrun.com/api/v1/leaderboards/{}/level/{}/{}?embed=variables".format(game.id, level.id, category.id))
-  il_board = dt.Leaderboard(api, data=api.get("leaderboards/{}/level/{}/{}?embed=variables".format(game.id, level.id, category.id)))
+    print("http://speedrun.com/api/v1/" + req)
+  il_board = dt.Leaderboard(api, data=api.get(req))
 
   #print(il_board)
   #print(il_board.runs)
@@ -223,7 +235,10 @@ def get_all_il_runs():
   for lev in all_levels:
     if lev.name in il_level_names:
       il_levels.append(lev)
-   
+
+  # set variables for medals
+  il_medals = il_medal_types
+
   # Get all (PB-time) runs from SRC
   if short_run:
     # run limited version of scrape for debug purposes
@@ -235,23 +250,24 @@ def get_all_il_runs():
   for level in runs_to_test:
   #for level in il_levels:
     for category in il_categories:
-      # Check for IL level/category combinations that can't be run at all
-      bad_il_combo = False
-      for combo in bad_il_combinations:
-        if level.name == combo[0] and category.name == combo[1]:
-          bad_il_combo = True
+        # Check for IL level/category combinations that can't be run at all
+        bad_il_combo = False
+        for combo in bad_il_combinations:
+          if level.name == combo[0] and category.name == combo[1]:
+            bad_il_combo = True
 
-      if bad_il_combo:
-        if debug >= 1:
-          print(textcol.WARN + "Ignoring level:", level.name, ":", category.name + textcol.BODY)
-        pass
-      else:
-        # Get a LIST of details for all runs fitting the level/category 
-        result = get_il_leaderboard(game, category, level)
-        for i in result:
-          if debug >= 2:
-            print("Adding to DB:", i)
-          add_il_run_to_db(i)
+        if bad_il_combo:
+          if debug >= 1:
+            print(textcol.WARN + "Ignoring level:", level.name, ":", category.name + textcol.BODY)
+          pass
+        else:
+          for medal in il_medals:
+            # Get a LIST of details for all runs fitting the level/category 
+            result = get_il_leaderboard(game, category, level, medal)
+            for i in result:
+              if debug >= 2:
+                print("Adding to DB:", i)
+              add_il_run_to_db(i)
 
   if debug >= 1:
     # Print out timed completion message
@@ -279,6 +295,8 @@ def get_all_il_runs():
 
 def updatePlayers():
   # Get a list of all of the players  for updating into the 'players' table
+  if debug >= 1:
+    print("updating player master list...")
 
   # Create connection to the DB
   con = lite.connect(DATABASE)

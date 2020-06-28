@@ -58,6 +58,9 @@ il_variable_ids = {"onvvdwnm":"Platform",
                    "z197emjl":"Any Medal",
                    "p123jdvl":"Gold Medal"}
 
+il_medal_types = ["z197emjl",
+                  "p123jdvl"]
+
 bad_il_combinations = [["Defection at Corellia", "X-Wing"],
                        ["Defection at Corellia", "A-Wing"],
                        ["Defection at Corellia", "Millennium Falcon"],
