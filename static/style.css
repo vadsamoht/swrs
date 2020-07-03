@@ -290,3 +290,7 @@ th {
     text-align: center;
     vertical-align: middle;
 }
+.runs-table-timebox.ghosted {
+    opacity: 0.25;
+    background: #cccccc;
+}

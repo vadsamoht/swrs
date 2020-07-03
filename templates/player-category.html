@@ -45,12 +45,58 @@
 
                 <div class="runs-table-row {{ level_acronyms[i] }}">
                 <div class="runs-table-timebox">{{ level_acronyms[i] }}</div>
-                {% for ship in level %}
-                    <div class="runs-table-timebox">
+
+                {% for j in range(level|length): %}
+                    {% set ship = level[j] %}
+                    {% if i in [0, 1, 2, 4, 5, 7, 9, 12, 13, 14, 15]: %}
+                        {% if j == 8: %}
+                            {% set ghost = 'ghosted' %}
+                        {% else %}
+                            {% set ghost = '' %}
+                        {% endif %}
+                    {% elif i in [3, 6, 11, 18]: %}
+                        {% if j not in [4]: %}
+                            {% set ghost = 'ghosted' %}
+                        {% else %}
+                            {% set ghost = '' %}
+                        {% endif %}
+                    {% elif i in [8]: %}
+                        {% if j not in [0, 1]: %}
+                            {% set ghost = 'ghosted' %}
+                        {% else %}
+                            {% set ghost = '' %}
+                        {% endif %}
+                    {% elif i in [10]: %}
+                        {% if j in [3, 4, 8]: %}
+                            {% set ghost = 'ghosted' %}
+                        {% else %}
+                            {% set ghost = '' %}
+                        {% endif %}
+                    {% elif i in [16]: %}
+                        {% if j not in [8]: %}
+                            {% set ghost = 'ghosted' %}
+                        {% else %}
+                            {% set ghost = '' %}
+                        {% endif %}
+                    {% elif i in [17]: %}
+                        {% if j not in [0]: %}
+                            {% set ghost = 'ghosted' %}
+                        {% elif j == 6 and platform == 'PC': %}
+                            {% set ghost = 'ghosted' %}
+                        {% else %}
+                            {% set ghost = '' %}
+                        {% endif %}
+                    {% endif %}
+
+
+
+                    <div class="runs-table-timebox {{ ghost }}">
                         {% if ship: %}
                             <a href="{{ ship[3] }}">{{ ship[2] }}</a>
                         {% else %}
+                            {% if ghost == '': %}
                             -
+                            {% endif %}
                         {% endif %}
                     </div>
                 {% endfor %}
