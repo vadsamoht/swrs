@@ -29,23 +29,22 @@
 
             <div id="runs-table">
                 <div class="runs-table-row">
-                    <div class="runs-table-timebox"> </div>
-                    <div class="runs-table-timebox">X</div>
-                    <div class="runs-table-timebox">Y</div>
-                    <div class="runs-table-timebox">A</div>
-                    <div class="runs-table-timebox">V</div>
-                    <div class="runs-table-timebox">SS</div>
-                    <div class="runs-table-timebox">MF</div>
-                    <div class="runs-table-timebox">TIE</div>
-                    <div class="runs-table-timebox">N1</div>
-                    <div class="runs-table-timebox">T-16</div>
+                    <div class="runs-table-timebox header ghosted"> </div>
+                    <div class="runs-table-timebox header">X</div>
+                    <div class="runs-table-timebox header">Y</div>
+                    <div class="runs-table-timebox header">A</div>
+                    <div class="runs-table-timebox header">V</div>
+                    <div class="runs-table-timebox header">SS</div>
+                    <div class="runs-table-timebox header">MF</div>
+                    <div class="runs-table-timebox header">TIE</div>
+                    <div class="runs-table-timebox header">N1</div>
+                    <div class="runs-table-timebox header">T-16</div>
                 </div>
             {% for i in range(runs|length): %}
                 {% set level = runs[i] %}
 
                 <div class="runs-table-row {{ level_acronyms[i] }}">
                 <div class="runs-table-timebox">{{ level_acronyms[i] }}</div>
-
                 {% for j in range(level|length): %}
                     {% set ship = level[j] %}
                     {% if i in [0, 1, 2, 4, 5, 7, 9, 12, 13, 14, 15]: %}
@@ -79,9 +78,9 @@
                             {% set ghost = '' %}
                         {% endif %}
                     {% elif i in [17]: %}
-                        {% if j not in [0]: %}
-                            {% set ghost = 'ghosted' %}
-                        {% elif j == 6 and platform == 'PC': %}
+                        {% if j == 7 and platform == 'N64': %}
+                            {% set ghost = '' %}
+                        {% elif j not in [0]: %}
                             {% set ghost = 'ghosted' %}
                         {% else %}
                             {% set ghost = '' %}
