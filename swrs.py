@@ -21,7 +21,7 @@ with con:
     DATESTAMP = cur.fetchall()[0][0]
 
 def convert_seconds(in_time):
-    print(in_time)
+    #print(in_time)
     out_time = 'ERR'
     secs = in_time % 60
     mins = (in_time - secs) // 60
@@ -199,7 +199,7 @@ def player_cat(player_id, category):
             #print(run)
             if run:
                 run = list(run[0])
-                print(run)
+                #print(run)
                 run[2] = convert_seconds(run[2])
             level_array.append(run)
 
@@ -208,10 +208,12 @@ def player_cat(player_id, category):
 
     #print(runs)
 
+    '''
     for i in runs:
         print(i)
         #print(i, convert_seconds(i[2]))
-    
+    '''
+
     try:
         return render_template('player-category.html',
                                name=player_id,
