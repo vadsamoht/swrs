@@ -7,43 +7,45 @@
 
 
 {% if all_boards %}
+            <div id="board-box">
 
-            {% for board in range(all_boards|length): %}
-            <div id="playerlist">
-                <div id="list-line" class="header">
-                    <div id="list-segment" class="title">
-                        {{ titles[board] }}
+                {% for board in range(all_boards|length): %}
+                <div id="playerlist">
+                    <div id="list-line" class="header">
+                        <div id="list-segment" class="title">
+                            {{ titles[board] }}
+                        </div>
                     </div>
-                </div>
-                <div id="list-line" class="header">
-                    <div id="list-segment" class="number"></div>
-                    <div id="list-segment" class="rating">Score</div>
-                    <div id="list-segment" class="name">Name</div>
-                </div>
+                    <div id="list-line" class="header">
+                        <div id="list-segment" class="number"></div>
+                        <div id="list-segment" class="rating">Score</div>
+                        <div id="list-segment" class="name">Name</div>
+                    </div>
 
-                {% set playerlist = input_data%}
-                {% for line in range(all_boards[board]|length):%}
-                    <div id="zebrastripes">
-                        <a href="/player/{{ all_boards[board][line][0] }}">
-                            {% if all_boards[board][line][1] == 0 %}
-                            <div id="list-line" class="unused">
-                            {% else %}
-                            <div id="list-line">
-                            {% endif %}
-                                <div id="list-segment" class="number">  {{ line+1 }}
+                    {% set playerlist = input_data%}
+                    {% for line in range(all_boards[board]|length):%}
+                        <div id="zebrastripes">
+                            <a href="/player/{{ all_boards[board][line][0] }}">
+                                {% if all_boards[board][line][1] == 0 %}
+                                <div id="list-line" class="unused">
+                                {% else %}
+                                <div id="list-line">
+                                {% endif %}
+                                    <div id="list-segment" class="number">  {{ line+1 }}
+                                    </div>
+                                    <div id="list-segment" class="rating">
+                                        {{ all_boards[board][line][1] }}
+                                    </div>
+                                    <div id="list-segment" class="name">
+                                        {{ all_boards[board][line][0] }}
+                                    </div>
                                 </div>
-                                <div id="list-segment" class="rating">
-                                    {{ all_boards[board][line][1] }}
-                                </div>
-                                <div id="list-segment" class="name">
-                                    {{ all_boards[board][line][0] }}
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
                 {% endfor %}
             </div>
-            {% endfor %}
 {% elif err %}
     <div id="search_error_message">
         {{ err }}

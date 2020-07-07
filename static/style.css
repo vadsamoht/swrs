@@ -119,6 +119,14 @@ body{
     max-width: 23%;
     display: inline-block;
 }
+#playerlist {
+    background: #ffffff;
+    border: 1px #000000 solid;
+    font-family: monospace;
+    font-size: 1.3em;
+    max-width: 23%;
+    flex-grow: 1;
+}
 #playerlist > div:nth-of-type(even){
     background: #e0e0e0;
 }
@@ -296,4 +304,9 @@ th {
 .runs-table-timebox.ghosted {
     opacity: 0.25;
     background: #cccccc;
+}
+#board-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
