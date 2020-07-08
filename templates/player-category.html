@@ -91,7 +91,19 @@
 
                     <div class="runs-table-timebox {{ ghost }}">
                         {% if ship: %}
-                            <a href="{{ ship[3] }}">{{ ship[2] }}</a>
+                            <a href="{{ ship[4] }}">{{ ship[2] }}</a>
+                            <div class="runs-table-ranking">
+                                {% if ship[3] == 1 %}
+                                    <b>WR</b>
+                                {% else %}
+                                    Rank {{ ship[3] }}
+                                {% endif %}
+                            </div>
+                            <!--<div class="runs-table-diff">
+                                {% if ship[3] == 1 %}
+                                    <b>+0:00</b>
+                                {% endif %}
+                            </div>-->
                         {% else %}
                             {% if ghost == '': %}
                             -

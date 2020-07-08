@@ -310,3 +310,9 @@ th {
     flex-direction: row;
     justify-content: space-evenly;
 }
+.runs-table-ranking {
+    font-size: 8pt;
+    padding-top: 7px;
+    margin: 0;
+    line-height: 1;
+}

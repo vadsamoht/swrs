@@ -63,6 +63,15 @@ def generate_scores(q_platform, q_level, q_category, q_medal):
         else:
             il_leaderboard[i].append(il_leaderboard[i-1][2])
 
+        with con:
+            cur = con.cursor()
+            cur.execute('UPDATE il_runs_' + DATESTAMP + 
+                        ' SET rank= ' + str(il_leaderboard[i][2]) +
+                        ' WHERE platform="' + q_platform + '"' +
+                        ' AND level="' + q_level + '"' +
+                        ' AND category="' + q_category + '"' +
+                        ' AND medal="' + q_medal + '"' +
+                        ' AND player="' + str(il_leaderboard[i][0]) + '"')
         il_leaderboard[i].append(calc_score(il_leaderboard[i][2], maximum_points))
 
     return il_leaderboard

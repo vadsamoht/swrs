@@ -188,7 +188,7 @@ def player_cat(player_id, category):
             # Get all runs matching the criteria
             cur = con.cursor()
             with con:
-                cur.execute('SELECT level, category, time, "src_link" ' +
+                cur.execute('SELECT level, category, time, rank, "src_link" ' +
                             'FROM il_runs_' + last_up + ' ' +
                             'WHERE player = "' + player_id + '" AND ' +
                             'platform = "' + console + '" AND ' +
