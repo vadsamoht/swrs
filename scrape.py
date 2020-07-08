@@ -191,7 +191,7 @@ def get_il_leaderboard(game, category, level, medal_type='NONE'):
   return(out)
 
 
-def add_il_run_to_db(run_data, rank=0):
+def add_il_run_to_db(run_data):
   # [level.name, 
   #  category.name,
   #  player_name,
@@ -204,9 +204,9 @@ def add_il_run_to_db(run_data, rank=0):
   con = lite.connect(DATABASE)
   with con:
     cur = con.cursor()
-    cur.execute("INSERT INTO il_runs_" + DATESTAMP + " (level, category, player, time, platform, medal, src_link, rank) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                [run_data[0], run_data[1], run_data[2], run_data[3], run_data[4], run_data[5], run_data[6], rank])
+    cur.execute("INSERT INTO il_runs_" + DATESTAMP + " (level, category, player, time, platform, medal, src_link) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                [run_data[0], run_data[1], run_data[2], run_data[3], run_data[4], run_data[5], run_data[6]])
 
 
 def get_all_il_runs():
@@ -266,12 +266,10 @@ def get_all_il_runs():
           for medal in il_medals:
             # Get a LIST of details for all runs fitting the level/category 
             result = get_il_leaderboard(game, category, level, medal)
-            rank_no = 0
             for i in result:
               if debug >= 2:
                 print("Adding to DB:", i)
-              rank_no += 1
-              add_il_run_to_db(i, rank_no)
+              add_il_run_to_db(i)
 
   if debug >= 1:
     # Print out timed completion message
