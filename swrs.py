@@ -24,7 +24,8 @@ def convert_seconds(in_time):
     #print(in_time)
     out_time = 'ERR'
     secs = in_time % 60
-    mins = (in_time - secs) // 60
+    mins = int((in_time - secs) // 60)
+
 
     if secs < 10:
         secs = '0' + str(secs)
