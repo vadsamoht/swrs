@@ -9,7 +9,7 @@ Made with:
 
 ## scrape.py
 
-Run this to fetch new runs from the API (it's not actually a scrape). Should take about 10 minutes to complete - some of this is due to the API response time, but could probably still be made much more efficient.
+Run this to fetch new runs from the API (it's not actually a scrape). Should take about 10-12 minutes to complete - some of this is due to the API response time, but could probably still be made much more efficient.
 
 ## rescore.py
 
