@@ -39,16 +39,40 @@
         </div>
 {% endmacro %}
 
-{% macro title(name, date) %}
+{% macro title(name, date, link='NULL') %}
             <div id="title">
-                    <h1>
-                        {{ name }}
-                    </h1>
-                    {% if date %}
-                    <div id="lastupdate">
-                        <p>Last leaderboard update: {{ date[:4] }}-{{ date[4:6] }}-{{ date[6:] }}</p>
-                    </div>
-                    {% endif %}
+                {% if link != 'NULL' %}
+                <a href="{{ link }}">
+                {% endif %}
+        
+                <h1>
+                    {{ name }}
+                </h1>
+        
+                {% if link != 'NULL' %}
+                </a>
+                {% endif %}
+        
+                {% if date %}
+                <div id="lastupdate">
+                    <p>Last leaderboard update: {{ date[:4] }}-{{ date[4:6] }}-{{ date[6:] }}</p>
+                </div>
+                {% endif %}
+            </div>
+{% endmacro %}
+
+{% macro pc_title(name, platform, medal, date, link='') %}
+            <div id="title">
+        
+                <h1>
+                    <a href="{{link}}">{{ name }}</a>: {{platform}}, {{medal}}
+                </h1>
+        
+                {% if date %}
+                <div id="lastupdate">
+                    <p>Last leaderboard update: {{ date[:4] }}-{{ date[4:6] }}-{{ date[6:] }}</p>
+                </div>
+                {% endif %}
             </div>
 {% endmacro %}
 
@@ -179,7 +203,8 @@
                 <!--<span title="v0.77 Greedo">SW:RS Ranking v0.76, Updated 1-Jul-2020</span>-->
                 <!--<span title="v0.78 Hutt">SW:RS Ranking v0.78, Updated 2-Jul-2020</span>-->
                 <!--<span title="v0.80 IG-88">SW:RS Ranking v0.80, Updated 7-Jul-2020</span>-->
-                <span title="v0.83 Janson">SW:RS Ranking v0.83, Updated 8-Jul-2020</span>
+                <!--<span title="v0.83 Janson">SW:RS Ranking v0.83, Updated 8-Jul-2020</span>-->
+                <span title="v0.85 Klivian">SW:RS Ranking v0.85, Updated 13-Jul-2020</span>
             </div>
         </div>
 

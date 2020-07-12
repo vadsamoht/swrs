@@ -108,6 +108,10 @@ body{
     margin: 0em 0em .0em 0em;
     font-style: normal;
 }
+h1 a {
+    text-decoration: underline #eee;
+    color: #000;
+}
 
 #playerlist{
     margin: 5px 10px 20px 10px;
@@ -291,6 +295,7 @@ th {
 .runs-table-timebox {
     margin: 1px;
     width: 75px;
+    height: 55px;
     line-height: 20px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -300,6 +305,14 @@ th {
 }
 .runs-table-timebox.header {
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.centertext {
+    padding: 0 !important;
+    line-height: 12pt;
+    height: 10px;
 }
 .runs-table-timebox.ghosted {
     opacity: 0.25;
