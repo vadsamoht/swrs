@@ -29,6 +29,11 @@ def convert_seconds(in_time):
 
     if secs < 10:
         secs = '0' + str(secs)
+    else:
+        secs = str(secs)
+
+    if len(secs) > 6:
+        secs = secs[:6]
 
     out_time = str(mins) + ':' + str(secs)
 
