@@ -89,17 +89,23 @@
                         {% endif %}
                     {% endif %}
 
+                    {% if ship[3] == 1 %}
+                        {% set wr='wr'%}
+                    {% endif %}
 
-                    <div class="runs-table-timebox {{ ghost }}">
+                    <div class="runs-table-timebox {{ ghost }} {{ wr }}">
                         {% if ship: %}
                             <a href="{{ ship[4] }}">{{ ship[2] }}</a>
-                            <div class="runs-table-ranking">
+                                <div class="runs-table-ranking {{wr}}">
                                 {% if ship[3] == 1 %}
-                                    <b>WR</b>
+                                        WR
                                 {% else %}
-                                    Rank {{ ship[3] }}
+                                        <b>Rank {{ ship[3] }}</b>
+                                    </div>
+                                    <div class="runs-table-difference">
+                                        (+{{ best_times[i][j] }})
                                 {% endif %}
-                            </div>
+                                </div>
                             <!--<div class="runs-table-diff">
                                 {% if ship[3] == 1 %}
                                     <b>+0:00</b>

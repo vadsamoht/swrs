@@ -318,6 +318,9 @@ th {
     opacity: 0.25;
     background: #cccccc;
 }
+.runs-table-timebox.wr {
+    background: #ffff0030;
+}
 #board-box {
     display: flex;
     flex-direction: row;
@@ -325,7 +328,20 @@ th {
 }
 .runs-table-ranking {
     font-size: 8pt;
-    padding-top: 7px;
+    padding-top: 10px;
     margin: 0;
-    line-height: 1;
+    line-height: 8pt;
+}
+.runs-table-ranking.wr {
+    line-height: 16pt;
+    font-size: 10pt;
+    padding-top: 11px;
+    font-weight: bold;
+    font-style: italic;
+}
+.runs-table-difference {
+    font-size: 8pt;
+    padding-top: 3px;
+    margin: 0;
+    line-height: 8pt;
 }

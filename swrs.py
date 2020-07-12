@@ -182,8 +182,10 @@ def player_cat(player_id, category):
         medal_type = 'MEDAL?'
 
     runs = []
+    bests = []
     for lev in il_level_names:
         level_array = []
+        bests_level = []
 
         for ship in il_category_names:
             # Get all runs matching the criteria
@@ -198,13 +200,37 @@ def player_cat(player_id, category):
                             'medal = "' + medal_type + '";')    
             run = cur.fetchall()
             #print(run)
+
+            player_best = 0
             if run:
                 run = list(run[0])
                 #print(run)
-                run[2] = convert_seconds(run[2])
+                player_best = run[2]
+                run[2] = convert_seconds(player_best)
             level_array.append(run)
 
+            # get the best time for comparison
+            with con:
+                cur.execute('SELECT time ' +
+                            'FROM il_runs_' + last_up + ' ' +
+                            'WHERE rank = 1 AND ' +
+                            'platform = "' + console + '" AND ' +
+                            'level = "' + lev + '" AND ' +
+                            'category = "' + ship + '" AND ' +
+                            'medal = "' + medal_type + '";')    
+            best_run = cur.fetchall()
+            if best_run:
+                best_run = list(best_run[0])[0]
+                #print(run)
+                # set best_run to difference between the best & current player's
+                print(player_best, best_run)
+                best_run = player_best - best_run
+                print(best_run)
+                best_run = convert_seconds(best_run)
+            bests_level.append(best_run)
+
         runs.append(level_array)
+        bests.append(bests_level)
 
 
     #print(runs)
@@ -221,6 +247,7 @@ def player_cat(player_id, category):
                                medal=medal_type,
                                platform=console,
                                runs=runs,
+                               best_times=bests,
                                last_update=DATESTAMP)
     except Exception as e:
         return str(e)
