@@ -1,4 +1,4 @@
-# swrs
+# SWRS
 
 Leaderboards for Star Wars: Rogue Squadron using the Speedrun.com API.
 
