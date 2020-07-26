@@ -340,11 +340,12 @@ def updatePlayers():
 if not os.path.isfile(DATABASE):
     createNewDb()
 
+# Delete old DB if exists
+# Copy over full_db.sqlite if exists
 updateDb()
 get_all_il_runs()
 updatePlayers()
-
-
-
-
+# Copy DB back to full_db.sqlite, overwriting if necessary
+# Remove all unnecessary tables from runs_db.sqlite (keep latest runs info, scoring, metadata)
+#   DELETE FROM sqlite_master WHERE type = 'table' AND name NOT IN ('X', 'Y', 'Z');
 
