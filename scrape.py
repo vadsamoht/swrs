@@ -345,26 +345,51 @@ def copyFromTo(file_from, file_to):
 def trimDB():
     # Removes un-needed tables from DB for uploading to server
 
-    #   DELETE FROM sqlite_master WHERE type = 'table' AND name NOT IN ('X', 'Y', 'Z');
+    # Create connection to the DB
+    con = lite.connect(DATABASE)
+
+    with con:
+        cur = con.cursor()
+        cur.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        results = cur.fetchall()
+
+    tables_list = []
+    latest_table = 'il_runs_'+DATESTAMP
+    keep_tables = ['metadata', 'players', 'update_datestamps', latest_table]
+    for i in results:
+        if i[0] not in keep_tables:
+          tables_list.append(i[0])
+
+    print(tables_list)
+
+
+    for i in tables_list:
+        with con:
+            cur.execute('DROP TABLE ' + i + ';');
     
-    print("trimDB() not yet implemented")
+    with con:
+        cur.execute('VACUUM');
+
+    if debug >= 2:
+        print("Trim complete")
 
 
 
 
 
-
-# Delete old DB if exists
+# Copy over full_db.sqlite if exists
 copyFromTo(FULL_DATABASE, DATABASE)
 
+# Create new DB if none copied over
 if not os.path.isfile(DATABASE):
     createNewDb()
 
-# Copy over full_db.sqlite if exists
+# Run the 'scrape'
 updateDb()
 get_all_il_runs()
 updatePlayers()
 
+# Run the player-scoring script
 os.system('python3 rescore.py')
 
 # Copy DB back to full_db.sqlite, overwriting if necessary
