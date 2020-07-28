@@ -15,7 +15,7 @@ from globalvariables import *
 #...
 #   GLOBALS
 #
-debug = 2 # 0=no output, 1=limited, 2=detailed
+debug = 1 # 0=no output, 1=limited, 2=detailed
 short_run = False
 
 
@@ -378,6 +378,8 @@ def trimDB():
 
 
 # Copy over full_db.sqlite if exists
+if debug >= 1:
+    print("duplicating full_db...")
 copyFromTo(FULL_DATABASE, DATABASE)
 
 # Create new DB if none copied over
@@ -390,12 +392,18 @@ get_all_il_runs()
 updatePlayers()
 
 # Run the player-scoring script
+if debug >= 1:
+    print("Scoring players...")
 os.system('python3 rescore.py')
 
 # Copy DB back to full_db.sqlite, overwriting if necessary
+if debug >= 1:
+    print("Backing up full_db...")
 copyFromTo(DATABASE, FULL_DATABASE)
 
 # Remove all unnecessary tables from runs_db.sqlite (keep latest runs info, scoring, metadata)
+if debug >= 1:
+    print('Trimming wokring DB...')
 trimDB()
 
 
