@@ -15,7 +15,8 @@ Updates both `runs_db.sqlite` and `full_db.sqlite` with each run.
 
 ## rescore.py
 
-Run this to generate scores for the latest runs and write those back to the DB. Removes any previous data for 'today' (i.e. the lastest date runs have been added) before update. 
+Run this to generate scores for the latest runs and write those back to the DB. Removes any previous data for 'today' (i.e. the lastest date runs have been added) before update.
+
 **Note:** this is now called automatically as part of `scrape.py`, but can still be done manually if needed for testing.
 
 ## swrs.py
@@ -24,7 +25,7 @@ Can be run locally as a default flask server for local testing on 127.0.0.1:5000
 
 ## runs_db.sqlite
 
-The working DB that the website reads from. Only contains the latest update's runs and historical scores for each player-category.
+The working DB that the website reads from. Contains the historical total scores for each player-category, but only the IL leaderboard from the last time `scrape.py` was successfully run.
 
 ## full_db.sqlite
 
