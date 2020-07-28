@@ -1,6 +1,6 @@
 # SWRS
 
-Leaderboards for Star Wars: Rogue Squadron using the Speedrun.com API.
+Scored leaderboards website for Star Wars: Rogue Squadron using the Speedrun.com API.
 
 Made with:
 - Python 3
