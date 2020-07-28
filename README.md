@@ -21,7 +21,7 @@ Run this to generate scores for the latest runs and write those back to the DB. 
 
 ## swrs.py
 
-Can be run locally as a default flask server for local testing on 127.0.0.1:5000
+Can be run locally as a default flask server for local testing on `127.0.0.1:5000`
 
 ## runs_db.sqlite
 
