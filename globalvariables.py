@@ -4,6 +4,7 @@ from datetime import date
 #   DATABASE GLOBALS
 #
 DATABASE = './runs_db.sqlite'
+FULL_DATABASE = './full_db.sqlite'
 
 DATABASE_VERSION = 'v0.9.2020-6-23'
 

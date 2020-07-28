@@ -3,7 +3,9 @@ import sqlite3 as lite
 import sys
 import time
 import os.path
+import shutil
 from datetime import date
+from os import path, system
 
 import srcomapi, srcomapi.datatypes as dt # pip3 install srcomapi
 api = srcomapi.SpeedrunCom(); api.debug = 0
@@ -13,7 +15,7 @@ from globalvariables import *
 #...
 #   GLOBALS
 #
-debug = 1 # 0=no output, 1=limited, 2=detailed
+debug = 2 # 0=no output, 1=limited, 2=detailed
 short_run = False
 
 
@@ -329,23 +331,46 @@ def updatePlayers():
   return
 
 
+def copyFromTo(file_from, file_to):
+    # Attempts to copy file IFF file_from exists
+    if debug >= 2:
+        print('Copying file from', file_from, 'to', file_to + '...')
+
+    if path.exists(file_from):
+        shutil.copyfile(file_from, file_to)
+    else:
+        # do nothing
+        pass
+
+def trimDB():
+    # Removes un-needed tables from DB for uploading to server
+
+    #   DELETE FROM sqlite_master WHERE type = 'table' AND name NOT IN ('X', 'Y', 'Z');
+    
+    print("trimDB() not yet implemented")
 
 
 
 
 
 
-
+# Delete old DB if exists
+copyFromTo(FULL_DATABASE, DATABASE)
 
 if not os.path.isfile(DATABASE):
     createNewDb()
 
-# Delete old DB if exists
 # Copy over full_db.sqlite if exists
 updateDb()
 get_all_il_runs()
 updatePlayers()
+
+os.system('python3 rescore.py')
+
 # Copy DB back to full_db.sqlite, overwriting if necessary
+copyFromTo(DATABASE, FULL_DATABASE)
+
 # Remove all unnecessary tables from runs_db.sqlite (keep latest runs info, scoring, metadata)
-#   DELETE FROM sqlite_master WHERE type = 'table' AND name NOT IN ('X', 'Y', 'Z');
+trimDB()
+
 
