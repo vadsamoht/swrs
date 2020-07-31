@@ -360,8 +360,8 @@ def trimDB():
         if i[0] not in keep_tables:
           tables_list.append(i[0])
 
-    print(tables_list)
-
+    if debug >= 2:
+      print(tables_list)
 
     for i in tables_list:
         with con:
