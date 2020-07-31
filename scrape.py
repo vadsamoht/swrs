@@ -342,6 +342,7 @@ def copyFromTo(file_from, file_to):
         # do nothing
         pass
 
+
 def trimDB():
     # Removes un-needed tables from DB for uploading to server
 
