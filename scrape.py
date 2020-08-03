@@ -384,7 +384,7 @@ def trimDB():
 if debug >= 1:
     print("duplicating full_db...")
 copyFromTo(FULL_DATABASE, DATABASE)
-
+'''
 # Create new DB if none copied over
 if not os.path.isfile(DATABASE):
     createNewDb()
@@ -393,7 +393,7 @@ if not os.path.isfile(DATABASE):
 updateDb()
 get_all_il_runs()
 updatePlayers()
-
+'''
 # Run the player-scoring script
 if debug >= 1:
     print("Scoring players...")
