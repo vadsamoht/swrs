@@ -1,14 +1,14 @@
 from flask import (Flask, send_file, render_template, request,
                    redirect, make_response, g, url_for, jsonify)
 import sqlite3 as lite
+
+from globalvariables import *
+
 app = Flask(__name__)
 application = app
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-from globalvariables import *
-
 debug = False
-
 
 
 # Create connection to the DB
@@ -20,12 +20,11 @@ with con:
 
     DATESTAMP = cur.fetchall()[0][0]
 
+
 def convert_seconds(in_time):
-    #print(in_time)
     out_time = 'ERR'
     secs = in_time % 60
     mins = int((in_time - secs) // 60)
-
 
     if secs < 10:
         secs = '0' + str(secs)
@@ -72,13 +71,11 @@ def home():
             title = q_console.upper() + ' ' + q_medal.capitalize() + ' Medal'
             board_titles.append(title)
 
-    #print(all_leaderboards)
-
     try:
         return render_template('main.html',
-                               titles = board_titles,
+                               titles=board_titles,
                                all_boards=all_leaderboards,
-                               last_date = DATESTAMP)
+                               last_date=DATESTAMP)
     except Exception as e:
         return str(e)
 
@@ -98,21 +95,18 @@ def player(player_id):
     if debug:
         print(player_id)
 
-
-            
     # Create connection to the DB
     con = lite.connect(DATABASE)
     cur = con.cursor()
     with con:
         cur.execute('SELECT date FROM update_datestamps')
-    
+
     col_names = cur.fetchall()
-    
+
     up_dates = []
     for i in col_names:
-        if i[0] not in up_dates and i[0] != None:
+        if i[0] not in up_dates and i[0] is not None:
             up_dates.append(i[0])
-    #print(up_dates)
 
     scoredata = []
     scoredata.append(up_dates)
@@ -124,8 +118,7 @@ def player(player_id):
 
             for date in up_dates:
                 q_col = date+'_'+q_console+'_'+q_medal
-                #print(q_col)
-                
+
                 # Create connection to the DB
                 con = lite.connect(DATABASE)
                 cur = con.cursor()
@@ -134,12 +127,10 @@ def player(player_id):
                                 ' FROM players' +
                                 ' WHERE name="' + player_id + '";')
                 score_result = cur.fetchall()
-                
+
                 current_list.append(score_result[0][0])
 
             scoredata.append(current_list)
-
-    #print(scoredata)
 
     for i in scoredata:
         latest_scores.append(i[-1])
@@ -174,7 +165,7 @@ def player_cat(player_id, category):
 
     # parse category id to variables
     tag = last_up + '_' + category
-    
+
     if category[0:2] == 'pc':
         console = "PC"
     elif category[0:3] == 'n64':
@@ -205,14 +196,12 @@ def player_cat(player_id, category):
                             'platform = "' + console + '" AND ' +
                             'level = "' + lev + '" AND ' +
                             'category = "' + ship + '" AND ' +
-                            'medal = "' + medal_type + '";')    
+                            'medal = "' + medal_type + '";')
             run = cur.fetchall()
-            #print(run)
 
             player_best = 0
             if run:
                 run = list(run[0])
-                #print(run)
                 player_best = run[2]
                 run[2] = convert_seconds(player_best)
             level_array.append(run)
@@ -225,12 +214,11 @@ def player_cat(player_id, category):
                             'platform = "' + console + '" AND ' +
                             'level = "' + lev + '" AND ' +
                             'category = "' + ship + '" AND ' +
-                            'medal = "' + medal_type + '";')    
+                            'medal = "' + medal_type + '";')
             best_run = cur.fetchall()
             if best_run:
                 best_run = list(best_run[0])[0]
-                #print(run)
-                # set best_run to difference between the best & current player's
+                # set best_run to difference between the best & current player
                 print(player_best, best_run)
                 best_run = player_best - best_run
                 print(best_run)
@@ -239,15 +227,6 @@ def player_cat(player_id, category):
 
         runs.append(level_array)
         bests.append(bests_level)
-
-
-    #print(runs)
-
-    '''
-    for i in runs:
-        print(i)
-        #print(i, convert_seconds(i[2]))
-    '''
 
     try:
         return render_template('player-category.html',
@@ -267,11 +246,13 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
+
 @app.errorhandler(500)
 def internal_server_error(error):
     app.logger.error('Server Error: %s', (error))
     print(error)
     return 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)

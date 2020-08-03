@@ -5,13 +5,15 @@ from globalvariables import *
 
 debug = 1
 
-prorated_maxima = [25, 35, 44, 52, 59, 65, 70, 75, 79, 83, 87, 90, 93, 95, 97, 98, 99, 100]
-#prorated_maxima2 = [25, 40, 50, 59, 67, 74, 80, 85, 89, 92, 95, 97, 99, 100]
+prorated_maxima = [25, 35, 44, 52, 59, 65, 70, 75, 79,
+                   83, 87, 90, 93, 95, 97, 98, 99, 100]
+# prorated_maxima2 = [25, 40, 50, 59, 67, 74, 80, 85, 89, 92, 95, 97, 99, 100]
 fastest_level_multiplier = 3
 
 # Overwrite as the formate needed here is different (TODO: fix this)
 il_platform_names = ["N64",
                      "PC"]
+
 
 def calc_score(position, maximum):
     if position == 1:
@@ -23,6 +25,7 @@ def calc_score(position, maximum):
     else:
         return maximum-(position+2)
 
+
 def generate_scores(q_platform, q_level, q_category, q_medal):
     # Create connection to the DB
     con = lite.connect(DATABASE)
@@ -30,11 +33,11 @@ def generate_scores(q_platform, q_level, q_category, q_medal):
     with con:
         cur = con.cursor()
         cur.execute('SELECT player, time FROM il_runs_' + DATESTAMP +
-                        ' WHERE platform="' + q_platform + '"' +
-                        ' AND level="' + q_level + '"' +
-                        ' AND category="' + q_category + '"' +
-                        ' AND medal="' + q_medal + '"' +
-                        ' ORDER BY time ASC')
+                    ' WHERE platform="' + q_platform + '"' +
+                    ' AND level="' + q_level + '"' +
+                    ' AND category="' + q_category + '"' +
+                    ' AND medal="' + q_medal + '"' +
+                    ' ORDER BY time ASC')
     il_leaderboard = cur.fetchall()
 
     for i in range(len(il_leaderboard)):
@@ -44,16 +47,16 @@ def generate_scores(q_platform, q_level, q_category, q_medal):
 
     number_players = len(il_leaderboard)
     if number_players > len(prorated_maxima):
-        maximum_points = prorated_maxima[-1]
+        max_points = prorated_maxima[-1]
     elif number_players == 0:
-        maximum_points = 0
+        max_points = 0
     else:
-        maximum_points = prorated_maxima[number_players-1]
+        max_points = prorated_maxima[number_players-1]
 
     if debug >= 2:
-        #print(il_leaderboard)
+        # print(il_leaderboard)
         print("Number of players:", number_players)
-        print("Maximum score:", maximum_points)
+        print("Maximum score:", max_points)
 
     for i in range(len(il_leaderboard)):
         if debug >= 2:
@@ -65,19 +68,19 @@ def generate_scores(q_platform, q_level, q_category, q_medal):
 
         with con:
             cur = con.cursor()
-            cur.execute('UPDATE il_runs_' + DATESTAMP + 
+            cur.execute('UPDATE il_runs_' + DATESTAMP +
                         ' SET rank= ' + str(il_leaderboard[i][2]) +
                         ' WHERE platform="' + q_platform + '"' +
                         ' AND level="' + q_level + '"' +
                         ' AND category="' + q_category + '"' +
                         ' AND medal="' + q_medal + '"' +
                         ' AND player="' + str(il_leaderboard[i][0]) + '"')
-        il_leaderboard[i].append(calc_score(il_leaderboard[i][2], maximum_points))
+        il_leaderboard[i].append(calc_score(il_leaderboard[i][2], max_points))
 
     return il_leaderboard
 
+
 def set_db_column(table, col_name, value):
-    #UPDATE table SET column=0
     # Create connection to the DB
     con = lite.connect(DATABASE)
 
@@ -88,6 +91,7 @@ def set_db_column(table, col_name, value):
         cur.execute(cmd)
 
     return
+
 
 # Create connection to the DB
 con = lite.connect(DATABASE)
@@ -134,11 +138,10 @@ for q_platform in il_platform_names:
             # List for storing sub-lists of times and scores
             level_master_list = []
 
-            # For each ship 
             for q_category in il_category_names:
-                #print(q_level, ":", q_category, "("+q_platform+", "+q_medal+")")
+                # For each ship
+                # print(q_level,":",q_category,"("+q_platform+","+q_medal+")")
                 scoreboard = generate_scores(q_platform, q_level, q_category, q_medal)
-
                 level_master_list.append(scoreboard)
 
             # Determine if there is a single fastest ship, get its list's index
@@ -147,7 +150,7 @@ for q_platform in il_platform_names:
             fastest_unique = False
             for i in range(len(level_master_list)):
                 if level_master_list[i]:
-                    #print(level_master_list[i][0][1])
+                    # print(level_master_list[i][0][1])
                     if level_master_list[i][0][1] < fastest_time:
                         fastest_time = level_master_list[i][0][1]
                         fastest_idx = i
@@ -163,7 +166,7 @@ for q_platform in il_platform_names:
                     i[3] = i[3] * fastest_level_multiplier
 
             if debug >= 2:
-                print("\n" + q_level + ": (" + q_platform + ", " + q_medal + ")")
+                print("\n" + q_level + ": " + q_platform + ", " + q_medal + "")
                 for i in level_master_list:
                     print(i)
 
@@ -176,10 +179,9 @@ for q_platform in il_platform_names:
                     con = lite.connect(DATABASE)
                     with con:
                         cur = con.cursor()
-                        cur.execute('UPDATE players SET "' + 
-                                    column_tag+'"="'+column_tag+'"+'+str(j[3]) + 
+                        cur.execute('UPDATE players SET "' + column_tag +
+                                    '"="' + column_tag + '"+' + str(j[3]) +
                                     ' WHERE name = "' + j[0] + '";')
-
 
             for i in level_master_list:
                 if i:
@@ -190,9 +192,9 @@ for q_platform in il_platform_names:
                     con = lite.connect(DATABASE)
                     with con:
                         cur = con.cursor()
-                        cur.execute('UPDATE players SET "' + 
-                                    column_tag + '"="' + 
-                                    column_tag + '"+' + str(i[0][-1]) + 
+                        cur.execute('UPDATE players SET "' +
+                                    column_tag + '"="' +
+                                    column_tag + '"+' + str(i[0][-1]) +
                                     ' WHERE name = "_max_possible";')
 
 # update max possible points
