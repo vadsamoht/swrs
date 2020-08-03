@@ -5,17 +5,19 @@ import time
 import os.path
 import shutil
 from datetime import date
-from os import path, system
+from os import path
+from os import system
 
-import srcomapi, srcomapi.datatypes as dt # pip3 install srcomapi
-api = srcomapi.SpeedrunCom(); api.debug = 0
+import srcomapi, srcomapi.datatypes as dt  # pip3 install srcomapi
+api = srcomapi.SpeedrunCom()
+api.debug = 0
 
 
 from globalvariables import *
 #...
 #   GLOBALS
 #
-debug = 1 # 0=no output, 1=limited, 2=detailed
+debug = 1  # 0=no output, 1=limited, 2=detailed
 short_run = False
 
 
@@ -158,7 +160,8 @@ def get_il_leaderboard(game, category, level, medal_type='NONE'):
   medal_hash = medal_type
 
   if debug >= 1:
-    print("Requesting", textcol.INFO + level.name+":", category.name+"," , medal_name, "Medal" + textcol.BODY, "...")
+    print("Requesting", textcol.INFO + level.name+":", category.name+",",
+          medal_name, "Medal" + textcol.BODY, "...")
 
 
   out = []
@@ -167,8 +170,6 @@ def get_il_leaderboard(game, category, level, medal_type='NONE'):
     print("http://speedrun.com/api/v1/" + req)
   il_board = dt.Leaderboard(api, data=api.get(req))
 
-  #print(il_board)
-  #print(il_board.runs)
   if il_board.runs != []:
     for il_run in il_board.runs:
       player_name = il_run["run"].players[0].name
@@ -176,7 +177,8 @@ def get_il_leaderboard(game, category, level, medal_type='NONE'):
 
       # get platform hash
       platform_id = il_variable_ids[il_run["run"].values["onvvdwnm"]]
-      #platform_id = il_run["run"].system["platform"] #Don't use this - use the one from variables instead
+      # Don't use the below code - use the one from variables instead
+      # platform_id = il_run["run"].system["platform"]
 
       # get medal hash
       medal_type = il_variable_ids[il_run["run"].values["78966vq8"]]
@@ -194,21 +196,22 @@ def get_il_leaderboard(game, category, level, medal_type='NONE'):
 
 
 def add_il_run_to_db(run_data):
-  # [level.name, 
-  #  category.name,
-  #  player_name,
-  #  run_time, 
-  #  platform_id,
-  #  medal_type,
-  #  src_link]
-  
-  # Create connection to the DB
-  con = lite.connect(DATABASE)
-  with con:
-    cur = con.cursor()
-    cur.execute("INSERT INTO il_runs_" + DATESTAMP + " (level, category, player, time, platform, medal, src_link) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)",
-                [run_data[0], run_data[1], run_data[2], run_data[3], run_data[4], run_data[5], run_data[6]])
+    # [level.name,
+    #  category.name,
+    #  player_name,
+    #  run_time,
+    #  platform_id,
+    #  medal_type,
+    #  src_link]
+
+    # Create connection to the DB
+    con = lite.connect(DATABASE)
+    with con:
+        cur = con.cursor()
+        cur.execute("INSERT INTO il_runs_" + DATESTAMP + " " +
+                    "(level, category, player, time, platform, medal, src_link)" +
+                    " VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    [run_data[0], run_data[1], run_data[2], run_data[3], run_data[4], run_data[5], run_data[6]])
 
 
 def get_all_il_runs():
@@ -252,7 +255,6 @@ def get_all_il_runs():
     runs_to_test = il_levels
 
   for level in runs_to_test:
-  #for level in il_levels:
     for category in il_categories:
         # Check for IL level/category combinations that can't be run at all
         bad_il_combo = False
@@ -262,11 +264,12 @@ def get_all_il_runs():
 
         if bad_il_combo:
           if debug >= 1:
-            print(textcol.WARN + "Ignoring level:", level.name, ":", category.name + textcol.BODY)
+            print(textcol.WARN + "Ignoring level:", level.name, ":",
+                  category.name + textcol.BODY)
           pass
         else:
           for medal in il_medals:
-            # Get a LIST of details for all runs fitting the level/category 
+            # Get a LIST of details for all runs fitting the level/category
             result = get_il_leaderboard(game, category, level, medal)
             for i in result:
               if debug >= 2:
@@ -280,55 +283,54 @@ def get_all_il_runs():
     if total_time >= 3600:
         timetaken += (textcol.WARN +
                       str(int((total_time - (total_time % 3600))/3600)) +
-                      textcol.BODY +
-                      " hrs, ")
+                      textcol.BODY + " hrs, ")
         total_time = total_time % 3600
     if total_time >= 60:
         timetaken += (textcol.INFO +
                       str(int((total_time - (total_time % 60))/60)) +
-                      textcol.BODY +
-                      " mins, ")
+                      textcol.BODY + " mins, ")
         total_time = total_time % 60
     timetaken += (textcol.OK +
                   str(int(total_time)) +
-                  textcol.BODY +
-                  " secs.")
+                  textcol.BODY + " secs.")
+
     print("Leaderboards scrape complete in " + timetaken + ".")
 
   return
 
+
 def updatePlayers():
-  # Get a list of all of the players  for updating into the 'players' table
-  if debug >= 1:
-    print("updating player master list...")
+    # Get a list of all of the players  for updating into the 'players' table
+    if debug >= 1:
+        print("updating player master list...")
 
-  # Create connection to the DB
-  con = lite.connect(DATABASE)
-
-  with con:
-    cur = con.cursor()
-
-    # get Players from all runs in DB
-    cur.execute('SELECT player FROM il_runs_' + DATESTAMP)
-
-    # create curated_player_list with all players and duplicates removed
-    full_player_list = cur.fetchall()
-    curated_player_list = []
-    for i in full_player_list:
-      if i[0] not in curated_player_list: # and i[0] is not "Jörmungandr":
-        curated_player_list.append(i[0])
-
-  # Insert each of those players into the 'players' table if not already present
-  for i in curated_player_list:
-    if debug >= 2:
-      print("Inserting player:", i)
-      pass
+    # Create connection to the DB
+    con = lite.connect(DATABASE)
 
     with con:
-      cur = con.cursor()
-      cur.execute('INSERT OR IGNORE INTO players(name) VALUES ("' + i + '")')
+        cur = con.cursor()
 
-  return
+        # get Players from all runs in DB
+        cur.execute('SELECT player FROM il_runs_' + DATESTAMP)
+
+        # create curated_player_list with all players and duplicates removed
+        full_player_list = cur.fetchall()
+        curated_player_list = []
+        for i in full_player_list:
+            if i[0] not in curated_player_list:  # and i[0] is not Jörmungandr
+                curated_player_list.append(i[0])
+
+    # Insert those players into the 'players' table if not already present
+    for i in curated_player_list:
+        if debug >= 2:
+            print("Inserting player:", i)
+            pass
+
+        with con:
+            cur = con.cursor()
+            cur.execute('INSERT OR IGNORE INTO players(name) VALUES ("'+i+'")')
+
+    return
 
 
 def copyFromTo(file_from, file_to):
@@ -359,23 +361,20 @@ def trimDB():
     keep_tables = ['metadata', 'players', 'update_datestamps', latest_table]
     for i in results:
         if i[0] not in keep_tables:
-          tables_list.append(i[0])
+            tables_list.append(i[0])
 
     if debug >= 2:
-      print(tables_list)
+        print(tables_list)
 
     for i in tables_list:
         with con:
-            cur.execute('DROP TABLE ' + i + ';');
-    
+            cur.execute('DROP TABLE ' + i + ';')
+
     with con:
-        cur.execute('VACUUM');
+        cur.execute('VACUUM')
 
     if debug >= 2:
         print("Trim complete")
-
-
-
 
 
 # Copy over full_db.sqlite if exists
@@ -402,9 +401,8 @@ if debug >= 1:
     print("Backing up full_db...")
 copyFromTo(DATABASE, FULL_DATABASE)
 
-# Remove all unnecessary tables from runs_db.sqlite (keep latest runs info, scoring, metadata)
+# Remove all unnecessary tables from runs_db.sqlite
+# keeping latest runs info, scoring, metadata only
 if debug >= 1:
     print('Trimming wokring DB...')
 trimDB()
-
-
