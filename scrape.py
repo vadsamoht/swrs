@@ -207,7 +207,7 @@ def add_il_run_to_db(run_data):
     #  medal_type,
     #  src_link]
 
-    vals = run_data[:6]
+    vals = run_data[:7]
     # Create connection to the DB
     con = lite.connect(DATABASE)
     with con:
