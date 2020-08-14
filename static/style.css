@@ -134,6 +134,9 @@ h1 a {
 #playerlist > div:nth-of-type(even){
     background: #e0e0e0;
 }
+#playerlist > div:nth-of-type(2) {
+    border-bottom: 1px solid #888;
+}
 #playerlist a{
     font-family: monospace;
     text-decoration: none;
